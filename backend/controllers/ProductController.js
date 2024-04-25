@@ -21,3 +21,22 @@ export const getProductbyId = async(req, res) =>{
         console.log(error.message)
     }
 }
+
+export const getProductbyIdPrice = async (req, res) => {
+    try {
+        const product = await Product.findOne({
+            where: {
+                id: req.params.id
+            }
+        });
+        if (product) {
+            const { productPrice } = product;
+            res.status(200).json({ productPrice });
+        } else {
+            res.status(404).json({ message: 'Product not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
