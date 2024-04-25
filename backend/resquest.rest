@@ -3,3 +3,7 @@ GET http://localhost:5000/product
 ###
 
 GET http://localhost:5000/product/1
+
+###
+
+GET http://localhost:5000/product/1/price
