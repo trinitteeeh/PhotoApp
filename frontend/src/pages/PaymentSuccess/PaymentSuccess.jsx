@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import css from "./PaymentSuccess.module.css";
 import { useNavigate } from "react-router-dom";
+import backgroundImage from "./background.svg";
 
 const PaymentSuccess = () => {
   const [count, setCount] = useState(3);
@@ -27,8 +28,12 @@ const PaymentSuccess = () => {
     return () => clearTimeout(timer);
   }, [count]);
 
+  const containerStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+  };
+
   return (
-    <div className={css.container}>
+    <div className={css.container} style={containerStyle}>
       <div className={css.topPart}>
         <img src="/images/logo/logo.svg" alt="" />
       </div>

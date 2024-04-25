@@ -3,7 +3,6 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-image: url("../../../public/images/payment_success/background.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -30,7 +29,7 @@
   gap: 1rem;
 }
 
-.thankyouTxt b{
+.thankyouTxt b {
   font-size: 5rem;
   font-family: "graffiti", sans-serif;
   color: #ffdf07;

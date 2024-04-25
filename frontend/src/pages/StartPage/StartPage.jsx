@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import css from "./StartPage.module.css";
 import PaymentQR from "../../components/PaymentQR/PaymentQR";
+import backgroundImage from "./background.svg";
 
 const StartPage = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const StartPage = () => {
     if (timerActive) {
       timer = setTimeout(() => {
         navigate("/tutor");
-      }, 5000);
+      }, 5000000);
     }
 
     return () => clearTimeout(timer);
@@ -32,8 +33,12 @@ const StartPage = () => {
     setShowPaymentDialog(false);
   };
 
+  const containerStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+  };
+
   return (
-    <div className={css.container}>
+    <div className={css.container} >
       {showPaymentDialog && <div className={css.overlay}></div>}
       {showPaymentDialog && <PaymentQR onClose={handleClosePaymentDialog} navigate={navigate} />}
       <div className={css.topPart}>
