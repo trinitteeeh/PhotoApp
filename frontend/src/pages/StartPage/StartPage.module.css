@@ -1,0 +1,84 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../../public/images/start_page/background.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 999; 
+}
+
+.topPart {
+  width: 100%;
+  height: 20%;
+}
+
+.topPart img {
+  width: 19.7%;
+}
+
+.middlePart {
+  width: 100%;
+  height: 65%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+}
+
+.startLogoContainer {
+  display: flex;
+  width: 36.7%;
+  position: relative;
+}
+
+.startLogo {
+  width: 100%;
+  cursor: pointer;
+}
+
+.arrow {
+  width: 9%;
+  rotate: -58.53;
+  position: absolute;
+  right: 1.5rem;
+  top: -2rem;
+}
+
+.paymentText {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.paymentLogo {
+  width: 26.3%;
+}
+
+.bottomPart {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  justify-content: end;
+  padding-right: 4rem;
+}
+
+.bottomPart img {
+  width: 19.4%;
+  cursor: pointer;
+}

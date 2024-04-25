@@ -1,0 +1,49 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../../public/images/payment_success/background.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.topPart {
+  width: 8.34%;
+  margin-left: 4rem;
+}
+
+.topPart img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.middlePart {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.thankyouTxt b {
+  font-size: 5rem;
+  font-family: "graffiti", sans-serif;
+  color: #ffdf07;
+}
+
+.paymentTxt {
+  font-size: 5rem;
+  font-family: "bricolage-grotesque", sans-serif;
+  font-weight: 200;
+}
+
+.countdownTxt {
+  font-size: 2rem;
+  font-family: "bricolage-grotesque", sans-serif;
+  font-weight: 500;
+}
