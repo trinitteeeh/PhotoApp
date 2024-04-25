@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import css from "./StartPage.module.css";
 import PaymentQR from "../../components/PaymentQR/PaymentQR";
 import backgroundImage from "./background.svg";
+import axios from "axios"; 
 
 const StartPage = () => {
   const navigate = useNavigate();
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [timerActive, setTimerActive] = useState(true);
+  const [productPrice, setProductPrice] = useState(null); 
 
   useEffect(() => {
     let timer;
@@ -20,6 +22,27 @@ const StartPage = () => {
     return () => clearTimeout(timer);
   }, [navigate, timerActive]);
 
+  useEffect(() => {
+    // Mengambil harga produk saat komponen dimuat
+    fetchProductPrice();
+  }, []);
+
+  const fetchProductPrice = async () => {
+    try {
+      // Melakukan permintaan HTTP untuk mendapatkan harga produk
+      const response = await axios.get('http://localhost:5000/product/1/price'); // Ganti URL dengan URL yang benar
+      const { productPrice } = response.data;
+
+      // Menyimpan harga produk ke dalam state
+      setProductPrice(productPrice);
+
+      // Menampilkan harga produk di konsol log
+      console.log('Product Price:', productPrice);
+    } catch (error) {
+      console.error('Error fetching product price:', error);
+    }
+  };
+
   const handleTutorPage = () => {
     navigate("/tutor");
   };
@@ -27,6 +50,8 @@ const StartPage = () => {
   const handleShowPaymentDialog = () => {
     setTimerActive(false);
     setShowPaymentDialog(true);
+
+    //window.snap.pay('TRANSACTION_TOKEN_HERE');
   };
 
   const handleClosePaymentDialog = () => {
