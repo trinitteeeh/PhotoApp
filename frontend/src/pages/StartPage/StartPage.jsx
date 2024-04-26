@@ -8,62 +8,76 @@ import axios from "axios";
 const StartPage = () => {
   const navigate = useNavigate();
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-  const [timerActive, setTimerActive] = useState(true);
-  const [productPrice, setProductPrice] = useState(null); 
+  const [token, setToken] = useState("")
 
-  useEffect(() => {
-    let timer;
-    if (timerActive) {
-      timer = setTimeout(() => {
-        navigate("/tutor");
-      }, 5000000);
-    }
-
-    return () => clearTimeout(timer);
-  }, [navigate, timerActive]);
-
-  useEffect(() => {
-    // Mengambil harga produk saat komponen dimuat
-    fetchProductPrice();
-  }, []);
-
-  const fetchProductPrice = async () => {
-    try {
-      // Melakukan permintaan HTTP untuk mendapatkan harga produk
-      const response = await axios.get('http://localhost:5000/product/1/price'); // Ganti URL dengan URL yang benar
-      const { productPrice } = response.data;
-
-      // Menyimpan harga produk ke dalam state
-      setProductPrice(productPrice);
-
-      // Menampilkan harga produk di konsol log
-      console.log('Product Price:', productPrice);
-    } catch (error) {
-      console.error('Error fetching product price:', error);
-    }
-  };
 
   const handleTutorPage = () => {
     navigate("/tutor");
   };
 
-  const handleShowPaymentDialog = () => {
-    setTimerActive(false);
-    setShowPaymentDialog(true);
+  const handleShowPaymentDialog = async () => {
 
-    //window.snap.pay('TRANSACTION_TOKEN_HERE');
+    try {
+      const response = await axios.post("http://localhost:5000/api/payment/process-transactions");
+      setToken(response.data.transactionToken);
+      console.log(response.data.transactionToken);   
+
+
+    } catch (error) {
+      console.error("Error fetching token:", error);
+    }
   };
 
   const handleClosePaymentDialog = () => {
     setShowPaymentDialog(false);
   };
 
+  useEffect(()=>{
+    if(token){
+      window.snap.pay(token,{
+        onSuccess: (result) =>{
+          localStorage.setItem("Pembayaran", JSON.stringify(result))
+          setToken("");
+        },
+        onPending: (result) =>{
+          localStorage.setItem("Pembayaran", JSON.stringify(result))
+          setToken("");
+        },
+        onError: (result) =>{
+          console.log("ERROR")
+          setToken("");
+        },
+        onClose: () =>{
+          localStorage.setItem("Anda Belum menyelesaikan pembayaran")
+          setToken("");
+        },
+      })
+      
+    }
+  },[token]);
+
+  useEffect(() => {
+    const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+
+    let scriptTag = document.createElement("script");
+    scriptTag.src = midtransUrl
+
+    const midtransClientKey = "SB-Mid-client-YIjPgxrJlKzSyJg9";
+    scriptTag.setAttribute("data-client-key", midtransClientKey)
+
+    document.body.appendChild(scriptTag)
+
+    return() =>{
+      document.body.removeChild(scriptTag)
+    }
+  })
+
   const containerStyle = {
     backgroundImage: `url(${backgroundImage})`,
   };
 
   return (
-    <div className={css.container}>
+    <div className={css.container} >
       {showPaymentDialog && <div className={css.overlay}></div>}
       {showPaymentDialog && <PaymentQR onClose={handleClosePaymentDialog} navigate={navigate} />}
       <div className={css.topPart}>
