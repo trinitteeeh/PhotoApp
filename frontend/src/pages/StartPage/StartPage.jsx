@@ -63,7 +63,7 @@ const StartPage = () => {
   };
 
   return (
-    <div className={css.container} >
+    <div className={css.container}>
       {showPaymentDialog && <div className={css.overlay}></div>}
       {showPaymentDialog && <PaymentQR onClose={handleClosePaymentDialog} navigate={navigate} />}
       <div className={css.topPart}>
