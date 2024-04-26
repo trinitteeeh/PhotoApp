@@ -7,3 +7,11 @@ GET http://localhost:5000/product/1
 ###
 
 GET http://localhost:5000/product/1/price
+
+###
+
+POST http://localhost:5000/order
+
+###
+POST http://localhost:5000/api/payment/process-transactions
+
