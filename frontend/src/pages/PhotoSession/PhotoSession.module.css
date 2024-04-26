@@ -2,10 +2,13 @@
   width: 100vw;
   height: 100vh;
   background-color: red;
-  justify-content: center;
-  align-items: center;
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
 }
 
-.timer{
-    background-color: green;
+.cameraContainer {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
 }

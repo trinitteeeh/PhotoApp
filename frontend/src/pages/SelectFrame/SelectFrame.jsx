@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import css from "./SelectFrame.module.css";
 import Frame from "../../components/Frame/Frame";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../AppContext";
 
 const SelectFrame = () => {
   const colorArray = ["pink", "blue", "green", "yellow"];
@@ -13,6 +14,7 @@ const SelectFrame = () => {
   const handleSelectColor = (color) => {
     setSelectedColor(color); // Update the selected color
   };
+
   return (
     <div className={css.container}>
       <div className={css.frameContainer}>

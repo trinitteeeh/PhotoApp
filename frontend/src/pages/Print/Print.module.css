@@ -1,0 +1,114 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../../public/images/print/background.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+}
+
+.leftSide {
+  width: 34vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.frameContainer {
+  height: 84.6%;
+  width: 100%;
+  position: relative;
+}
+
+.leatherFrame {
+  height: 100%;
+  object-fit: contain;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.frame {
+  background-color: pink;
+  z-index: 2;
+  border-radius: 10px;
+  position: absolute;
+  top: 5vh;
+  bottom: 5vh;
+  left: 3.5vw;
+  right: 3.5vw;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1vw;
+  padding: 1vw;
+  align-items: center;
+}
+
+.picture {
+  width: 12vw;
+  height: 12vw;
+  background-color: red;
+  border-radius: 5px;
+}
+
+.rightSide {
+  width: 66vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.printContainer {
+  height: 84.6%;
+  width: 100%;
+}
+
+.title {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  font-size: 3.5rem;
+  text-align: center;
+  font-weight: 500;
+  font-family: bricolage-grotesque;
+}
+
+.printImg {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.printImg img {
+  width: 80%;
+  object-fit: contain;
+}
+
+.bottomText {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 1rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: 500;
+  font-family: bricolage-grotesque;
+}
