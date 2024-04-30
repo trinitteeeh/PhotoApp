@@ -3,9 +3,10 @@ import css from "./PhotoSession.module.css"; // Ensure that this path matches yo
 import Timer from "../../components/Timer/Timer";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppContext";
+import LoadingPage from "../LoadingPage/LoadingPage";
 
 const PhotoSession = () => {
-  const [countDown, setCountDown] = useState(5);
+  const [countDown, setCountDown] = useState(2);
   const [pictureTaken, setPictureTaken] = useState(0);
   const videoRef = useRef(null);
   const { canvasRefs } = useAppContext();
@@ -13,6 +14,10 @@ const PhotoSession = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!videoRef) return;
+    if (pictureTaken <= 0 && countDown === 5) {
+      setInterval(3000);
+    }
     if (countDown === 0 && pictureTaken < 5) {
       takePicture();
       setPictureTaken(pictureTaken + 1);
@@ -20,7 +25,7 @@ const PhotoSession = () => {
       if (pictureTaken >= 4) {
         navigate("/select-filter");
       }
-      setCountDown(5);
+      setCountDown(2);
     } else if (pictureTaken > 5) {
       return;
     }
@@ -28,7 +33,7 @@ const PhotoSession = () => {
       setCountDown((prevCountDown) => prevCountDown - 1);
     }, 1000);
     return () => clearInterval(intervalId);
-  }, [countDown]);
+  }, [countDown, videoRef]);
 
   useEffect(() => {
     const getUserCamera = async () => {
@@ -60,7 +65,7 @@ const PhotoSession = () => {
   }, []);
 
   const takePicture = () => {
-    const width = 500; // Define width, height of the photo
+    const width = 500;
     const height = width / (16 / 9); // Aspect ratio of 16:9
     const newCanvas = document.createElement("canvas");
     newCanvas.width = width;
@@ -68,21 +73,13 @@ const PhotoSession = () => {
     const ctx = newCanvas.getContext("2d");
     if (ctx && videoRef.current) {
       ctx.drawImage(videoRef.current, 0, 0, width, height);
-      canvasRefs.current.push(newCanvas); // Store the canvas in the refs array
+      canvasRefs.current.push(newCanvas);
     }
-    // updateDisplay();
-  };
-
-  const updateDisplay = () => {
-    const container = document.getElementById("canvasContainer");
-    container.innerHTML = "";
-    canvasRefs.current.forEach((canvas) => {
-      container.appendChild(canvas);
-    });
   };
 
   return (
     <div className={css.container}>
+      {!videoRef && <LoadingPage />}
       <video ref={videoRef} autoPlay muted className={css.cameraContainer}></video>
       <Timer countDown={countDown} />
     </div>

@@ -3,26 +3,22 @@ import { useNavigate } from "react-router-dom";
 import css from "./StartPage.module.css";
 import PaymentQR from "../../components/PaymentQR/PaymentQR";
 import backgroundImage from "./background.svg";
-import axios from "axios"; 
+import axios from "axios";
 
 const StartPage = () => {
   const navigate = useNavigate();
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-  const [token, setToken] = useState("")
-
+  const [token, setToken] = useState("");
 
   const handleTutorPage = () => {
     navigate("/tutor");
   };
 
   const handleShowPaymentDialog = async () => {
-
     try {
       const response = await axios.post("http://localhost:5000/api/payment/process-transactions");
       setToken(response.data.transactionToken);
-      console.log(response.data.transactionToken);   
-
-
+      console.log(response.data.transactionToken);
     } catch (error) {
       console.error("Error fetching token:", error);
     }
@@ -32,52 +28,47 @@ const StartPage = () => {
     setShowPaymentDialog(false);
   };
 
-  useEffect(()=>{
-    if(token){
-      window.snap.pay(token,{
-        onSuccess: (result) =>{
-          localStorage.setItem("Pembayaran", JSON.stringify(result))
+  useEffect(() => {
+    if (token) {
+      window.snap.pay(token, {
+        onSuccess: (result) => {
+          localStorage.setItem("Pembayaran", JSON.stringify(result));
           setToken("");
         },
-        onPending: (result) =>{
-          localStorage.setItem("Pembayaran", JSON.stringify(result))
+        onPending: (result) => {
+          localStorage.setItem("Pembayaran", JSON.stringify(result));
           setToken("");
         },
-        onError: (result) =>{
-          console.log("ERROR")
+        onError: (result) => {
+          console.log("ERROR");
           setToken("");
         },
-        onClose: () =>{
-          localStorage.setItem("Anda Belum menyelesaikan pembayaran")
+        onClose: () => {
+          localStorage.setItem("Anda Belum menyelesaikan pembayaran");
           setToken("");
         },
-      })
-      
+      });
     }
-  },[token]);
+  }, [token]);
 
   useEffect(() => {
     const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
 
     let scriptTag = document.createElement("script");
-    scriptTag.src = midtransUrl
+    scriptTag.src = midtransUrl;
 
     const midtransClientKey = "SB-Mid-client-YIjPgxrJlKzSyJg9";
-    scriptTag.setAttribute("data-client-key", midtransClientKey)
+    scriptTag.setAttribute("data-client-key", midtransClientKey);
 
-    document.body.appendChild(scriptTag)
+    document.body.appendChild(scriptTag);
 
-    return() =>{
-      document.body.removeChild(scriptTag)
-    }
-  })
-
-  const containerStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-  };
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  });
 
   return (
-    <div className={css.container} >
+    <div className={css.container}>
       {showPaymentDialog && <div className={css.overlay}></div>}
       {showPaymentDialog && <PaymentQR onClose={handleClosePaymentDialog} navigate={navigate} />}
       <div className={css.topPart}>

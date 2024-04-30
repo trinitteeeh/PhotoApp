@@ -7,6 +7,9 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    minWidth: 400, // Optional: Set a minimum width
+    minHeight: 300, // Optional: Set a minimum height
+    fullscreen: true, // Start in full width
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: true, // Consider security implications
@@ -24,6 +27,17 @@ const createWindow = () => {
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 };
+
+app.on("will-resize", (event, newBounds) => {
+  const { width, height } = app.getBounds();
+  const aspectRatio = 800 / 600; // Initial aspect ratio
+  const newWidth = Math.round(newBounds.height * aspectRatio);
+  if (newWidth < newBounds.width) {
+    // Adjust the height based on the new width to maintain aspect ratio
+    event.preventDefault();
+    app.setSize(newWidth, newBounds.height);
+  }
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -46,6 +60,3 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
