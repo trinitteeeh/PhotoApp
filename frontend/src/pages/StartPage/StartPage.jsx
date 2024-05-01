@@ -38,6 +38,7 @@ const StartPage = () => {
         onSuccess: (result) =>{
           localStorage.setItem("Pembayaran", JSON.stringify(result))
           setToken("");
+          navigate("/payment-success")
         },
         onPending: (result) =>{
           localStorage.setItem("Pembayaran", JSON.stringify(result))
