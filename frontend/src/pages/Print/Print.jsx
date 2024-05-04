@@ -9,17 +9,77 @@ const Print = () => {
 
   useEffect(() => {
     const frameElement = document.getElementById("frame");
+    if (!frameElement) return; // Early return if the frame element does not exist
 
-    // Use html2canvas to create a canvas from the frame element
-    html2canvas(frameElement).then((canvas) => {
-      // Apply the filter to the canvas
-      const ctx = canvas.getContext("2d");
-      ctx.filter = filterRef.current;
+    const pictures = frameElement.querySelectorAll(`.${css.picture}`);
+    pictures.forEach((picture) => {
+      const canvas = picture.querySelector("canvas");
+      if (!canvas) return;
 
-      // Use image-screenshot to download the canvas as an image
-      screenshot(canvas).download()
+      html2canvas(canvas).then((canvasElement) => {
+        applyFilterToCanvas(canvasElement); // Apply filter and draw it directly
+        picture.replaceChildren(canvasElement); // Replace the picture's children with the new canvas
+      });
     });
-  }, []);
+
+    html2canvas(frameElement).then((frameCanvas) => {
+      screenshot(frameCanvas).download(); // Download the image of the frame
+    });
+  }, [filterRef.current]); // Depend on filterRef.current to re-run when it changes
+
+  // Function to apply filter to canvas
+  function applyFilterToCanvas(canvas) {
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    applyFilter(imageData.data, filterRef.current);
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  // Function to apply filter to pixel data
+  function applyFilter(data, filter) {
+    switch (filter) {
+      case "grayscale(50%)":
+        applyGrayscale(data);
+        break;
+      case "sepia(50%)":
+        applySepia(data);
+        break;
+      case "invert(100%)":
+        applyInvert(data);
+        break;
+      // Add more cases as needed for additional filters
+      default:
+        break;
+    }
+  }
+
+  function applyGrayscale(data) {
+    for (let i = 0; i < data.length; i += 4) {
+      const brightness = 0.3 * data[i] + 0.59 * data[i + 1] + 0.11 * data[i + 2];
+      data[i] = brightness; // Red
+      data[i + 1] = brightness; // Green
+      data[i + 2] = brightness; // Blue
+    }
+  }
+
+  function applySepia(data) {
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      data[i] = Math.min(255, 0.393 * r + 0.769 * g + 0.189 * b);
+      data[i + 1] = Math.min(255, 0.349 * r + 0.686 * g + 0.168 * b);
+      data[i + 2] = Math.min(255, 0.272 * r + 0.534 * g + 0.131 * b);
+    }
+  }
+
+  function applyInvert(data) {
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = 255 - data[i]; // Red
+      data[i + 1] = 255 - data[i + 1]; // Green
+      data[i + 2] = 255 - data[i + 2]; // Blue
+    }
+  }
 
   return (
     <div className={css.container}>

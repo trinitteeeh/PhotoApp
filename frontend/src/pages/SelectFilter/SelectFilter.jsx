@@ -27,16 +27,16 @@ const SelectFilter = () => {
   return (
     <div className={css.container}>
       <div className={css.leftSide}>
-        <div className={css.frameContainer}>
+        <div className={css.frameContainer}>s
           <img src="/images/select_filter/leather_frame.svg" alt="" className={css.leatherFrame} />
           <div className={css.frame}>
             {canvasRefs.current.map((canvas, index) =>
               index === 2 ? (
                 <>
-                  <div className={css.picture}>
+                  <div className={css.picture} key={index + "img"}>
                     <img src="/images/select_filter/piper_logo.svg" alt="Static Image" />
                   </div>
-                  <div className={css.picture} style={{ filter: selectedFilter }}>
+                  <div className={css.picture} style={{ filter: selectedFilter }} key={index}>
                     {canvas && <canvas ref={(el) => el && el.replaceWith(canvas)}></canvas>}
                   </div>
                 </>
