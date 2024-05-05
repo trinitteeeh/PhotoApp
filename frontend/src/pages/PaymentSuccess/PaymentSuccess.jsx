@@ -2,11 +2,25 @@ import React, { useEffect, useState } from "react";
 import css from "./PaymentSuccess.module.css";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "./background.svg";
+import axios from "axios"; // Pastikan telah mengimpor axios
 
 const PaymentSuccess = () => {
   const [count, setCount] = useState(3);
   const [dot, setDot] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const updateOrderStatus = async () => {
+      try {
+        await axios.put("http://localhost:5000/order/update-status", { newStatus: "success" }); // Pastikan URL dan data dikirim sesuai dengan permintaan yang berhasil
+        console.log("Order status updated successfully");
+      } catch (error) {
+        console.error("Error updating order status:", error);
+      }
+    };
+
+    updateOrderStatus(); // Panggil fungsi untuk memperbarui status order saat komponen dimuat
+  }, []); // Gunakan array kosong agar efek hanya dijalankan sekali saat komponen dimuat
 
   // Handle dot changes
   useEffect(() => {
