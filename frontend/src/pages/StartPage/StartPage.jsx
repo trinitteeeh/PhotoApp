@@ -29,13 +29,25 @@ const StartPage = () => {
   };
 
   useEffect(() => {
+    const handlePaymentSuccess = async (result) => {
+      try {
+        // Simpan hasil pembayaran ke local storage
+        localStorage.setItem("Pembayaran", JSON.stringify(result));
+         // Misalnya, Anda mendapatkan orderId dari local storage
+        setToken("");
+        navigate("/payment-success");
+        // Kirim permintaan ke backend untuk memperbarui status order
+  
+        // Bersihkan token dan navigasikan ke halaman sukses pembayaran
+        
+      } catch (error) {
+        console.error("Error updating order status:", error);
+      }
+    };
+  
     if (token) {
       window.snap.pay(token, {
-        onSuccess: (result) => {
-          localStorage.setItem("Pembayaran", JSON.stringify(result));
-          setToken("");
-          navigate("/payment-success")
-        },
+        onSuccess: handlePaymentSuccess,
         onPending: (result) => {
           localStorage.setItem("Pembayaran", JSON.stringify(result));
           setToken("");
@@ -51,6 +63,7 @@ const StartPage = () => {
       });
     }
   }, [token]);
+  
 
   useEffect(() => {
     const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
