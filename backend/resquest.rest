@@ -19,3 +19,11 @@ POST http://localhost:5000/api/payment/process-transactions
 ###
 POST http://localhost:1500/api/start?mode=print&password=8uNiXR7dqX549jjG
 
+###
+PUT http://localhost:5000/order/update-status
+Content-Type: application/json
+
+{
+    "newStatus": "ss"
+}
+
