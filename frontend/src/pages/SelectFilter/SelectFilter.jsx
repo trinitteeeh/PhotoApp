@@ -3,6 +3,7 @@ import css from "./SelectFilter.module.css";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppContext";
 import Filter from "../../components/Filter/Filter";
+import PhotoSessionDisplay from "../../components/PhotoSessionDisplay/PhotoSessionDisplay";
 
 const SelectFilter = () => {
   const navigate = useNavigate();
@@ -27,7 +28,8 @@ const SelectFilter = () => {
   return (
     <div className={css.container}>
       <div className={css.leftSide}>
-        <div className={css.frameContainer}>s
+        <div className={css.frameContainer}>
+          s
           <img src="/images/select_filter/leather_frame.svg" alt="" className={css.leatherFrame} />
           <div className={css.frame}>
             {canvasRefs.current.map((canvas, index) =>
