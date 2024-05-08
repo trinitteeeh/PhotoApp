@@ -18,3 +18,20 @@
   object-fit: contain;
 }
 
+.paymentContainer {
+  /* Tetapkan posisi relatif untuk kontainer pembayaran */
+  position: relative;
+}
+
+.imageWithQR {
+  /* Tetapkan posisi relatif untuk gambar dengan QR code */
+  position: relative;
+}
+
+.qrCodeWrapper {
+  /* Tetapkan posisi absolut untuk QR code */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

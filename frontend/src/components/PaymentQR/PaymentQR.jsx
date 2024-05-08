@@ -1,14 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import css from "./PaymentQR.module.css";
+import QRCode from "qrcode.react";
+import axios from "axios";
 
-const PaymentQR = ({ onClose, navigate }) => {
-  const handleNavigate = () => {
-    navigate("payment-success");
-  };
+const PaymentQR = ({ navigate, qrUrl }) => {
+  const [paymentStatus, setPaymentStatus] = useState("");
+
+  useEffect(() => {
+    // Set up polling to check the payment status every 5 seconds
+    const interval = setInterval(async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/payment/get-transaction-status/:orderId");
+        console.log("Checking payment status..."); // Debugging log
+        if (response.data !== paymentStatus) {
+          setPaymentStatus(response.data);
+        }
+      } catch (error) {
+        console.error("Error while checking payment status:", error);
+      }
+    }, 5000);
+
+    return () => clearInterval(interval); // Cleanup the interval on component unmount
+  }, [paymentStatus]); // Includes paymentStatus to potentially handle changes
+
+  useEffect(() => {
+    // React to paymentStatus changes
+    if (paymentStatus === 'settlement') {
+      navigate("/payment-success");
+    } else if (paymentStatus === 'failed') {
+      console.error("Payment failed, please try again");
+    }
+  }, [paymentStatus]); // This effect depends on paymentStatus
+
   return (
-    <div className={css.container} onClick={handleNavigate}>
+    <div className={css.container}>
       <div className={css.paymentContainer}>
-        <img src="/images/payment_qr/payment_qr.svg" alt="" className={css.containerImg} />
+        <div className={css.imageWithQR}>
+          <img src="/images/payment_qr/payment_qr.svg" alt="" className={css.containerImg} />
+          <div className={css.qrCodeWrapper}>
+            <QRCode value={qrUrl} />
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,14 +1,14 @@
+// StartPage.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import css from "./StartPage.module.css";
 import PaymentQR from "../../components/PaymentQR/PaymentQR";
-import backgroundImage from "./background.svg";
 import axios from "axios";
 
 const StartPage = () => {
   const navigate = useNavigate();
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-  const [token, setToken] = useState("");
+  const [qrUrl, setQRUrl] = useState("");
 
   const handleTutorPage = () => {
     navigate("/tutor");
@@ -17,10 +17,11 @@ const StartPage = () => {
   const handleShowPaymentDialog = async () => {
     try {
       const response = await axios.post("http://localhost:5000/api/payment/process-transactions");
-      setToken(response.data.transactionToken);
-      console.log(response.data.transactionToken);
+      setShowPaymentDialog(true);
+      console.log(response.data.message)
+      setQRUrl(response.data.message); // Set QR URL yang diterima dari respons
     } catch (error) {
-      console.error("Error fetching token:", error);
+      console.error("Error fetching QR URL:", error);
     }
   };
 
@@ -28,63 +29,11 @@ const StartPage = () => {
     setShowPaymentDialog(false);
   };
 
-  useEffect(() => {
-    const handlePaymentSuccess = async (result) => {
-      try {
-        // Simpan hasil pembayaran ke local storage
-        localStorage.setItem("Pembayaran", JSON.stringify(result));
-         // Misalnya, Anda mendapatkan orderId dari local storage
-        setToken("");
-        navigate("/payment-success");
-        // Kirim permintaan ke backend untuk memperbarui status order
-  
-        // Bersihkan token dan navigasikan ke halaman sukses pembayaran
-        
-      } catch (error) {
-        console.error("Error updating order status:", error);
-      }
-    };
-  
-    if (token) {
-      window.snap.pay(token, {
-        onSuccess: handlePaymentSuccess,
-        onPending: (result) => {
-          localStorage.setItem("Pembayaran", JSON.stringify(result));
-          setToken("");
-        },
-        onError: (result) => {
-          console.log("ERROR");
-          setToken("");
-        },
-        onClose: () => {
-          localStorage.setItem("Anda Belum menyelesaikan pembayaran");
-          setToken("");
-        },
-      });
-    }
-  }, [token]);
-  
-
-  useEffect(() => {
-    const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-
-    let scriptTag = document.createElement("script");
-    scriptTag.src = midtransUrl;
-
-    const midtransClientKey = "SB-Mid-client-YIjPgxrJlKzSyJg9";
-    scriptTag.setAttribute("data-client-key", midtransClientKey);
-
-    document.body.appendChild(scriptTag);
-
-    return () => {
-      document.body.removeChild(scriptTag);
-    };
-  });
 
   return (
     <div className={css.container}>
       {showPaymentDialog && <div className={css.overlay}></div>}
-      {showPaymentDialog && <PaymentQR onClose={handleClosePaymentDialog} navigate={navigate} />}
+      {showPaymentDialog && <PaymentQR onClose={handleClosePaymentDialog} navigate={navigate} qrUrl={qrUrl} />}
       <div className={css.topPart}>
         <img src="/images/start_page/logo_with_name.svg" alt="" />
       </div>

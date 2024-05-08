@@ -16,6 +16,11 @@ POST http://localhost:5000/order
 POST http://localhost:5000/api/payment/process-transactions
 
 
+###6f12ddd3-604e-4921-ad8d-f2a0833be6af
+
+GET http://localhost:5000/api/payment/get-transaction-status/:orderId
+
+
 ###
 POST http://localhost:1500/api/start?mode=print&password=8uNiXR7dqX549jjG
 
