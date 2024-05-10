@@ -4,7 +4,7 @@ import QRCode from "qrcode.react";
 import axios from "axios";
 
 const PaymentQR = ({ navigate, qrUrl }) => {
-  const [paymentStatus, setPaymentStatus] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("pending");
 
   useEffect(() => {
     // Set up polling to check the payment status every 5 seconds
@@ -27,7 +27,12 @@ const PaymentQR = ({ navigate, qrUrl }) => {
     // React to paymentStatus changes
     if (paymentStatus === 'settlement') {
       navigate("/payment-success");
-    } else if (paymentStatus === 'failed') {
+    } else if (paymentStatus === 'pending') {
+      console.log("Pending Payment Wait TO Pay")
+    }
+    else{
+
+      navigate("/payment-failed");
       console.error("Payment failed, please try again");
     }
   }, [paymentStatus]); // This effect depends on paymentStatus

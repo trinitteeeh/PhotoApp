@@ -10,19 +10,35 @@ const StartPage = () => {
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [qrUrl, setQRUrl] = useState("");
 
+  const [generateQr , setGenerateQr]= useState(false)
+
   const handleTutorPage = () => {
     navigate("/tutor");
   };
 
-  const handleShowPaymentDialog = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/api/payment/process-transactions");
-      setShowPaymentDialog(true);
-      console.log(response.data.message)
-      setQRUrl(response.data.message); // Set QR URL yang diterima dari respons
-    } catch (error) {
-      console.error("Error fetching QR URL:", error);
+  useEffect(() =>{
+    const makeqr = async ()=>{
+      if(generateQr===true){
+        try {
+          const response = await axios.post("http://localhost:5000/api/payment/process-transactions");
+          setShowPaymentDialog(true);
+          console.log(response.data.message)
+          setQRUrl(response.data.message); // Set QR URL yang diterima dari respons
+        } catch (error) {
+          console.error("Error fetching QR URL:", error);
+        }
+      }
+   
     }
+    makeqr()
+
+  },[generateQr])
+
+
+
+  const handleShowPaymentDialog = async () => {
+    setGenerateQr(true);
+   
   };
 
   const handleClosePaymentDialog = () => {
