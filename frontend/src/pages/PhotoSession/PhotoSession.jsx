@@ -12,7 +12,7 @@ const PhotoSession = () => {
   const [pictureTaken, setPictureTaken] = useState(0);
   const [flash, setFlash] = useState(false);
   const [timerReady, setTimerReady] = useState(false);
-
+  const beepRef = useRef(null);
   const videoRef = useRef(null);
   const { canvasRefs } = useAppContext();
 
@@ -24,9 +24,24 @@ const PhotoSession = () => {
       setTimeout(() => {
         setTimerReady(true);
       }, 1000);
+      return;
     }
+
+    const playBeep = () => {
+      if (beepRef.current) {
+        beepRef.current.currentTime = 0;
+        beepRef.current.play();
+
+        // Stop the beep after 0.5 seconds
+        setTimeout(() => {
+          beepRef.current.pause();
+          beepRef.current.currentTime = 0;
+        }, 500);
+      }
+    };
+
     //Ketika titik 0
-    else if (countDown === 0 && pictureTaken < 5) {
+    if (countDown === 0 && pictureTaken < 5) {
       takePicture();
       setPictureTaken(pictureTaken + 1);
       //add flashing effect and wait for 2 seconds
@@ -45,6 +60,7 @@ const PhotoSession = () => {
     } else {
       const intervalId = setInterval(() => {
         setCountDown((prevCountDown) => prevCountDown - 1);
+        playBeep();
       }, 1000);
       return () => clearInterval(intervalId);
     }
@@ -96,6 +112,7 @@ const PhotoSession = () => {
     <div className={css.container}>
       {!videoRef && <LoadingPage />}
       <video ref={videoRef} autoPlay muted className={css.cameraContainer}></video>
+      <audio ref={beepRef} src="/audio/countdown_beep.wav" preload="auto"></audio>
       {flash && <Flash />}
       {!flash && timerReady && <Timer countDown={countDown} />}
       <PhotoSessionDisplay canvasRef={canvasRefs} />
