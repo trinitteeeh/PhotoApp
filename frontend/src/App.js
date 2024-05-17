@@ -8,6 +8,7 @@ import SelectFrame from "./pages/SelectFrame/SelectFrame.jsx";
 import PhotoSession from "./pages/PhotoSession/PhotoSession.jsx";
 import SelectFilter from "./pages/SelectFilter/SelectFilter.jsx";
 import Print from "./pages/Print/Print.jsx";
+import ProductSelection from "./pages/ProductSelection/ProductSelection.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/photo-session" element={<PhotoSession />} />
         <Route path="/select-filter" element={<SelectFilter />} />
         <Route path="/print" element={<Print />} />
+        <Route path="/product-selection" element={<ProductSelection />} />
       </Routes>
     </BrowserRouter>
   );

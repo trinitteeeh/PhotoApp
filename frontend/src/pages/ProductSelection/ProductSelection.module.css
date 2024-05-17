@@ -1,0 +1,92 @@
+.container {
+    text-align: center;
+  }
+  
+  .productList {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .productItem {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 10px;
+    cursor: pointer;
+    width: 200px;
+    text-align: left;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .productItem:hover {
+    transform: scale(1.05);
+  }
+  
+  .productItem h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .productItem p {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .productItem button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .productItem button:hover {
+    background-color: #0056b3;
+  }
+  
+  .paymentDialog .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  
+  .paymentDialog .dialogContent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 1001;
+    text-align: center;
+  }
+  
+  .paymentDialog .dialogContent img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .paymentDialog .dialogContent button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .paymentDialog .dialogContent button:hover {
+    background-color: #0056b3;
+  }
+  
