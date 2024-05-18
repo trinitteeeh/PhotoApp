@@ -3,8 +3,22 @@ import Order from '../models/OrderModel.js';
 
 export const createOrder = async (req, res) => {
     try {
+        // Mendapatkan ID terbesar yang ada di database saat ini
+        const latestOrder = await Order.findOne({
+            order: [['orderId', 'DESC']], // Ambil order terbaru berdasarkan orderId descending
+            attributes: ['orderId'] // Hanya ambil orderId saja
+        });
+
+        let newOrderId = 1; // ID default untuk order pertama jika tidak ada order sebelumnya
+
+        if (latestOrder) {
+            // Jika ada order sebelumnya, tambahkan 1 ke ID terbesar untuk mendapatkan ID baru
+            newOrderId = latestOrder.orderId + 1;
+        }
+
         // Data order yang ingin dimasukkan
-        const orderData = { // ID order yang Anda inginkan
+        const orderData = {
+            orderId: newOrderId,
             productId: '1', // ID produk yang terkait dengan order
             dateOrder: new Date(), // Tanggal pemesanan
             orderStatus: 'Pending'
@@ -15,6 +29,7 @@ export const createOrder = async (req, res) => {
         const newOrder = await Order.create(orderData);
 
         // Mengirim respons sukses bersama dengan data order yang baru
+        console.log(orderData)
         res.status(201).json(newOrder);
     } catch (error) {
         console.error(error);
