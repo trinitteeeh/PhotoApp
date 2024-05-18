@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import css from "./PaymentSuccess.module.css";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "./background.svg";
 import axios from "axios"; // Pastikan telah mengimpor axios
 
 const PaymentSuccess = () => {
-  const [count, setCount] = useState(3);
+  const [count, setCount] = useState(5);
   const [dot, setDot] = useState("");
   const navigate = useNavigate();
 
@@ -42,19 +41,13 @@ const PaymentSuccess = () => {
     return () => clearTimeout(timer);
   }, [count]);
 
-  const containerStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-  };
-
   return (
-    <div className={css.container} style={containerStyle}>
-      <div className={css.topPart}>
-        <img src="/images/logo/logo.svg" alt="" />
-      </div>
+    <div className={css.container}>
+      <div className={css.topPart}></div>
       <div className={css.middlePart}>
-        <h2 className={css.thankyouTxt}>
-          <b>THANK YOU!</b>
-        </h2>
+        <div className={css.thankyou}>
+          <img src="/images/payment_success/thankyou.svg" alt="" />
+        </div>
         <h2 className={css.paymentTxt}>
           Payment <b>Success!</b>
         </h2>

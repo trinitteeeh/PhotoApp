@@ -9,9 +9,10 @@
   height: 2vw;
 }
 
-h5{
-    text-align: center;
-    font-size: 1rem;
+h5 {
+  text-align: center;
+  font-size: 1rem;
+  color: #000;
 }
 
 .imageContainer {

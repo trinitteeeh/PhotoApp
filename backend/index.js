@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use(ProductRoute);
 app.use(OrderRoute);
-app.use("/api/payment",PaymentRoute);
+app.use("/api/payment", PaymentRoute);
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server Up And Running on port ${PORT}...`));

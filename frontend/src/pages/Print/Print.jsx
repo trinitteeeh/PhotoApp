@@ -7,35 +7,35 @@ const Print = () => {
   const { canvasRefs, filterRef } = useAppContext();
   const frameRef = useRef(null);
 
-  useEffect(() => {
-    const applyFilterToCanvases = () => {
-      // Get all divs with the class 'picture' within the frame
-      const pictureDivs = frameRef.current.querySelectorAll(`.${css.picture}`);
-      pictureDivs.forEach((div) => {
-        const canvas = div.querySelector("canvas");
-        // Only apply filter if the child is a canvas
-        if (canvas) {
-          const ctx = canvas.getContext("2d");
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          applyFilter(imageData.data, filterRef.current); // Use your filter function here
-          ctx.putImageData(imageData, 0, 0);
-        }
-      });
-    };
+  // useEffect(() => {
+  //   const applyFilterToCanvases = () => {
+  //     // Get all divs with the class 'picture' within the frame
+  //     const pictureDivs = frameRef.current.querySelectorAll(`.${css.picture}`);
+  //     pictureDivs.forEach((div) => {
+  //       const canvas = div.querySelector("canvas");
+  //       // Only apply filter if the child is a canvas
+  //       if (canvas) {
+  //         const ctx = canvas.getContext("2d");
+  //         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  //         applyFilter(imageData.data, filterRef.current); // Use your filter function here
+  //         ctx.putImageData(imageData, 0, 0);
+  //       }
+  //     });
+  //   };
 
-    // Capture the frame as an image and download it
-    const downloadFrameAsImage = () => {
-      html2canvas(frameRef.current).then((canvas) => {
-        const link = document.createElement("a");
-        link.download = "frame-image.png";
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    };
+  //   // Capture the frame as an image and download it
+  //   const downloadFrameAsImage = () => {
+  //     html2canvas(frameRef.current).then((canvas) => {
+  //       const link = document.createElement("a");
+  //       link.download = "frame-image.png";
+  //       link.href = canvas.toDataURL();
+  //       link.click();
+  //     });
+  //   };
 
-    applyFilterToCanvases();
-    downloadFrameAsImage();
-  }, [filterRef.current]); // Rerun effect if the filter changes
+  //   applyFilterToCanvases();
+  //   downloadFrameAsImage();
+  // }, [filterRef.current]); // Rerun effect if the filter changes
 
   // Function to apply specific filters
   const applyFilter = (data, filter) => {
@@ -52,33 +52,25 @@ const Print = () => {
   return (
     <div className={css.container}>
       <div className={css.leftSide}>
+        <h2 className={css.title}>
+          Printing&nbsp;&nbsp;&nbsp;Your &nbsp;&nbsp;&nbsp;<b style={{ color: "#fff" }}>Memories</b>
+        </h2>
         <div className={css.frameContainer}>
-          <img src="/images/select_filter/leather_frame.svg" alt="" className={css.leatherFrame} />
           <div className={css.frame} ref={frameRef}>
-            {canvasRefs.current.map((canvas, index) =>
-              index === 2 ? (
-                <>
-                  <div className={css.picture} key={index + "img"}>
-                    <img src="/images/select_filter/piper_logo.svg" alt="Static Image" />
-                  </div>
-                  <div className={css.picture} style={{ filter: filterRef.current }} key={index}>
-                    {canvas && <canvas ref={(el) => el && el.replaceWith(canvas)}></canvas>}
-                  </div>
-                </>
-              ) : (
-                <div key={index} className={css.picture} style={{ filter: filterRef.current }}>
-                  {canvas && <canvas ref={(el) => el && el.replaceWith(canvas)}></canvas>}
-                </div>
-              )
-            )}
+            {canvasRefs.current.map((canvas, index) => (
+              <div key={index} className={css.picture} style={{ filter: filterRef.current }}>
+                {canvas && <canvas ref={(el) => el && el.replaceWith(canvas)}></canvas>}
+              </div>
+            ))}
           </div>
         </div>
       </div>
       <div className={css.rightSide}>
         <div className={css.printContainer}>
-          <h2 className={css.title}>Printing Your Memories</h2>
           <img src="/images/print/print.svg" alt="" className={css.printImg} />
-          <h4 className={css.bottomText}>Creating another memory in 60s</h4>
+          <h4 className={css.bottomText}>
+            Creating another&nbsp;<b>memories!</b> &nbsp;in 60s
+          </h4>
         </div>
       </div>
     </div>

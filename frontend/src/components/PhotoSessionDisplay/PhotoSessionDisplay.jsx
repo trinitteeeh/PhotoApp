@@ -5,7 +5,7 @@ const PhotoSessionDisplay = ({ canvasRef }) => {
   // Function to create 5 child divs
   const renderChildren = () => {
     const children = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       children.push(
         <div className={css.child} key={i}>
           {canvasRef.current && canvasRef.current[i] ? <canvas ref={(el) => el && el.replaceWith(canvasRef.current[i])}></canvas> : null}

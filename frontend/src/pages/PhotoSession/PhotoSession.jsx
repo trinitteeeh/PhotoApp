@@ -41,7 +41,7 @@ const PhotoSession = () => {
     };
 
     //Ketika titik 0
-    if (countDown === 0 && pictureTaken < 5) {
+    if (countDown === 0 && pictureTaken < 3) {
       takePicture();
       setPictureTaken(pictureTaken + 1);
       //add flashing effect and wait for 2 seconds
@@ -50,7 +50,7 @@ const PhotoSession = () => {
         setFlash(false); // End flash
 
         // Check if 5 pictures have been taken, if so, navigate to next page
-        if (pictureTaken >= 4) {
+        if (pictureTaken >= 2) {
           navigate("/select-filter");
         } else {
           // Reset countdown only if less than 5 pictures have been taken
