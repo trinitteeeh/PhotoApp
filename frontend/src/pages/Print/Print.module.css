@@ -22,28 +22,27 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .frame {
-  height: 100%;
-  width: 50%;
-  background-image: url("../../../public/images/product_selection/1_strip.svg");
+  height: 71vh;
+  width: 13.38vw;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2.35vh;
   padding-top: 3.21vh;
   padding-left: 0.6vw;
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .picture {
   width: 9.05vw;
   height: 9.05vw;
-  border-radius: 5px;
   border-radius: 5px;
 }
 
@@ -53,19 +52,46 @@ canvas {
   object-fit: cover;
 }
 
+.logo {
+  width: 50%;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .rightSide {
   width: 55vw;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: red;
+  position: relative;
+}
+
+.qrContainer {
+  position: absolute;
+  width: 18vw;
+  height: 18vw;
+  left: 6vw;
+  top: 40vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr {
+  width: 100%;
+  height: 100%;
 }
 
 .printContainer {
   height: 68%;
   width: 100%;
   margin-top: auto;
-  /* background-color: aqua; */
 }
 
 .title {

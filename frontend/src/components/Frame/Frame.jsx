@@ -1,13 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import css from "./Frame.module.css";
 
-const Frame = ({ bgColor, onSelectColor, selected }) => {
+const Frame = ({ background, onSelectColor, selected }) => {
   return (
-    <div
-      className={css.container}
-      style={{ backgroundColor: bgColor }}
-      onClick={onSelectColor} 
-    >
+    <div className={css.container} style={{ backgroundImage: `url('${background}')` }} onClick={onSelectColor}>
       {selected && <div className={css.selected}>Selected</div>}
     </div>
   );

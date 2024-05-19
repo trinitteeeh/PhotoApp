@@ -1,9 +1,11 @@
 .container {
   height: 60%;
   width: 16%;
-  background-color: pink;
   cursor: pointer;
   border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .selected {

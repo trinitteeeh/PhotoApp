@@ -5,14 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppContext";
 
 const SelectFrame = () => {
-  const colorArray = ["pink", "blue", "green", "yellow", "red", "black"];
+  const colorArray = ["/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg"];
 
   const navigate = useNavigate();
+  const [selectedFrame, setSelectedFrame] = useState("");
+  const [frames, setFrames] = useState(colorArray);
+  const { frameRef } = useAppContext();
 
-  const [selectedColor, setSelectedColor] = useState("");
-
-  const handleSelectColor = (color) => {
-    setSelectedColor(color); // Update the selected color
+  const handleSelect = (frame) => {
+    setSelectedFrame(frame); // Update the selected frame
+    frameRef.current = frame;
   };
 
   return (
@@ -23,8 +25,8 @@ const SelectFrame = () => {
         </div>
         <div className={css.bottom}>
           <div className={css.frameWrapper}>
-            {colorArray.map((color, index) => (
-              <Frame key={index} bgColor={color} onSelectColor={() => handleSelectColor(color)} selected={color === selectedColor} />
+            {frames.map((background, index) => (
+              <Frame key={index} background={background} onSelectColor={() => handleSelect(background)} selected={background === selectedFrame} />
             ))}
           </div>
         </div>
@@ -34,8 +36,7 @@ const SelectFrame = () => {
         <div
           className={css.imgPlaceholder}
           style={{
-            backgroundColor: selectedColor || "#f0f0f0", // Default to light grey when no color is selected
-            backgroundImage: selectedColor ? "none" : `url('${process.env.PUBLIC_URL}/images/select_frame/empty_frame.svg')`,
+            backgroundImage: selectedFrame ? `url('${selectedFrame}')` : `url('${process.env.PUBLIC_URL}/images/select_frame/empty_frame.svg')`,
           }}
         ></div>
         <div className={css.frameLogo} onClick={() => navigate("/photo-session")}>

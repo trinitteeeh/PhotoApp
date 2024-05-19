@@ -43,12 +43,15 @@ const SelectFilter = () => {
       </div>
       <div className={css.rightSide}>
         <div className={css.frameContainer}>
-          <div className={css.frame}>
+          <div className={css.frame} style={{ backgroundImage: `url('${frameRef.current}')` }}>
             {canvasRefs.current.map((canvas, index) => (
               <div key={index} className={css.picture} style={{ filter: selectedFilter }}>
                 {canvas && <canvas ref={(el) => el && el.replaceWith(canvas)}></canvas>}
               </div>
             ))}
+            <div className={css.logo}>
+              <img src="/images/select_filter/logo.svg" alt="" />
+            </div>
           </div>
         </div>
         <div className={css.printLogo}>
