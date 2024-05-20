@@ -5,11 +5,13 @@ import html2canvas from "html2canvas";
 import { QRCodeSVG } from "qrcode.react";
 import { applyFilter } from "./filter";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Print = () => {
   const { canvasRefs, filterRef, frameRef } = useAppContext();
   const printRef = useRef(null);
   const [imageURL, setImageURL] = useState("");
+  const [qrCodeValue, setQRCodeValue] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const [timer, setTimer] = useState(60);
   const [dot, setDot] = useState("");
@@ -60,40 +62,55 @@ const Print = () => {
       });
     };
 
-    const downloadFrameAsImage = () => {
-      html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
-        const link = document.createElement("a");
-        link.download = "frame-image.png";
-        link.href = canvas.toDataURL();
-        link.click();
+    const downloadFrameAsImage = async () => {
+      const canvas = await html2canvas(printRef.current, { backgroundColor: null });
+      const url = canvas.toDataURL("image/jpeg"); // Mengatur kualitas JPEG ke 0.5 untuk mengurangi ukuran data URL
 
-        const fileName = "foto.png";
-        const url = canvas.toDataURL("image/png");
+      // Kirim URL gambar ke server
+      try {
+        const response = await axios.post("http://localhost:5000/upload", { imageUrl: url });
+        console.log("INI URLNYA ::::;   ", url);
+        setQRCodeValue(url);
 
-        // Optionally upload the canvas to the server here
-        // fetch("/upload", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({ imageBase64: url, fileName }),
-        // })
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     setImageURL(data.imageUrl);
-        //   })
-        //   .catch((error) => {
-        //     console.error("Error uploading image:", error);
-        //   });
-
-        const imageURL = "https://t4.ftcdn.net/jpg/01/25/86/35/360_F_125863509_jaISqQt7MOfhOT3UxRTHZoEbMmmFYIr8.jpg";
-        setImageURL(imageURL);
-      });
+        //setImageURL(url); // Atur URL gambar jika pengiriman berhasil
+      } catch (error) {
+        console.error("Failed to upload photo:", error);
+      }
     };
 
     applyFilterToCanvases();
     downloadFrameAsImage();
+  }, [filterRef.current]);
+
+  const getImageURL = async () => {
+    try {
+      // Mengambil URL gambar dari server
+      const response = await axios.get("http://localhost:5000/get");
+      const imageUrl = response.data.imageUrl;
+      setImageURL(imageUrl);
+
+      // Set nilai QR code
+      // setQRCodeValue(imageUrl);
+    } catch (error) {
+      console.error("Error getting image URL:", error);
+    }
+  };
+
+  useEffect(() => {
+    getImageURL();
   }, [isLoaded, filterRef]);
+
+  // Function to apply specific filters
+  const applyFilter = (data, filter) => {
+    // Example grayscale filter
+    if (filter === "grayscale(50%)") {
+      for (let i = 0; i < data.length; i += 4) {
+        const brightness = 0.3 * data[i] + 0.59 * data[i + 1] + 0.11 * data[i + 2];
+        data[i] = data[i + 1] = data[i + 2] = brightness;
+      }
+    }
+    // Add other filters similarly
+  };
 
   return (
     <div className={css.container}>
@@ -116,7 +133,7 @@ const Print = () => {
         </div>
       </div>
       <div className={css.rightSide}>
-        <div className={css.qrContainer}>{imageURL && <QRCodeSVG value={imageURL} className={css.qr} />}</div>
+        <div className={css.qrContainer}>{imageURL && <QRCodeSVG value={qrCodeValue} className={css.qr} />}</div>
         <div className={css.printContainer}>
           <img src="/images/print/print.svg" alt="" className={css.printImg} />
           <h4 className={css.bottomText}>

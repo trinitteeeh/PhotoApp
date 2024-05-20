@@ -1,6 +1,8 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 import Order from "./OrderModel.js"; // Pastikan untuk mengimpor model Order jika belum
+
+const { DataTypes } = Sequelize;
 
 const Photo = db.define('Photo', {
   photoId: {
@@ -16,19 +18,9 @@ const Photo = db.define('Photo', {
       key: 'orderId'
     }
   },
-  Photo: {
+  photo: {
     type: DataTypes.BLOB,
     allowNull: false
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
   }
 });
 
