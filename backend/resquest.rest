@@ -15,6 +15,19 @@ POST http://localhost:5000/order
 ###
 POST http://localhost:5000/api/payment/process-transactions
 
+###
+POST http://localhost:5000/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="photo"; filename="frame-image.png"
+Content-Type: image/jpeg
+
+[Binary data of the image file]
+----WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+
 
 ###6f12ddd3-604e-4921-ad8d-f2a0833be6af
 
