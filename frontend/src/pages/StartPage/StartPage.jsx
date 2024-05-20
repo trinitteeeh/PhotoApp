@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import css from "./StartPage.module.css";
 
 const StartPage = () => {
   const navigate = useNavigate();
-  localStorage.clear();
+
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   const handleTutorPage = () => {
     navigate("/tutor");
