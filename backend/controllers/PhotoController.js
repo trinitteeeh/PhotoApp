@@ -1,44 +1,65 @@
-// PhotoController.js
-
 import Photo from '../models/PhotoModel.js';
+import axios from 'axios';
+import FormData from 'form-data';
+import fs from 'fs';
+import path from 'path';
 
-const PhotoController = {
-  async createPhoto(req, res) {
-    try {
-      const { orderId, photoData } = req.body;
-      const newPhoto = await Photo.create({
-        orderId: orderId,
-        Photo: photoData
-      });
-      res.status(201).json({ success: true, message: 'Photo created successfully', data: newPhoto });
-    } catch (error) {
-      console.error('Error creating photo:', error);
-      res.status(500).json({ success: false, message: 'Failed to create photo', error: error.message });
-    }
-  },
+export const uploadPhoto = async (req, res) => {
+  try {
+    const { imageUrl } = req.body; // Ambil imageUrl dari body request
 
-  async uploadPhoto(req, res) {
-    try {
-      // Ensure the file is uploaded correctly
-      if (!req.file) {
-        return res.status(400).json({ message: 'No file uploaded' });
-      }
+    // Simpan foto ke database
+    const savedPhoto = await Photo.create({
+      photo: imageUrl, // Simpan URL gambar ke dalam database
+      orderId: 4
+    });
 
-      // Get information about the uploaded file
-      const photo = req.file;
+    console.log("image >>>>>>> database :       " , imageUrl)
 
-      // Do something with the photo, e.g., save it to the database or perform other operations
-      const newPhoto = await Photo.create({
-        Photo: photo.buffer // Using the uploaded photo buffer
-      });
-
-      // Send response with the uploaded image URL
-      res.status(200).json({ success: true, message: 'Photo uploaded successfully', imageUrl: `path/to/${photo.originalname}`, data: newPhoto });
-    } catch (error) {
-      console.error('Error uploading photo:', error);
-      res.status(500).json({ success: false, message: 'Internal server error' });
-    }
+    res.status(201).json({ photoId: savedPhoto.photoId });
+  } catch (error) {
+    console.error('Error uploading photo:', error);
+    res.status(500).json({ error: 'Failed to upload photo' });
   }
 };
 
-export default PhotoController;
+
+export const getLatestPhoto = async (req, res) => {
+  try {
+    // Ambil photoId terbaru
+    const latestPhotoId = await Photo.max('photoId');
+
+    // Ambil URL gambar dari database berdasarkan photoId terbaru
+    const latestPhoto = await Photo.findOne({ where: { photoId: latestPhotoId } });
+
+    if (!latestPhoto) {
+      return res.status(404).json({ error: 'Latest image URL not found' });
+    }
+
+    res.status(200).json({ imageUrl: latestPhoto.photo });
+  } catch (error) {
+    console.error('Error getting latest image URL:', error);
+    res.status(500).json({ error: 'Failed to get latest image URL' });
+  }
+};
+
+
+export const getPhoto = async (req, res) => {
+  
+  try {
+    // Ambil URL gambar dari database
+    const savedPhoto = await Photo.findOne({ where: { photoId: 37 } });
+    if (!savedPhoto) {
+      return res.status(404).json({ error: 'Image URL not found' });
+    }
+    res.status(200).json({ imageUrl: savedPhoto });
+  } catch (error) {
+    console.error('Error getting image URL:', error);
+    res.status(500).json({ error: 'Failed to get image URL' });
+  }
+};
+
+
+
+
+export default uploadPhoto;
