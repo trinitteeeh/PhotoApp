@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import css from "./SelectFrame.module.css";
 import Frame from "../../components/Frame/Frame";
 import { useNavigate } from "react-router-dom";
@@ -8,13 +8,21 @@ const SelectFrame = () => {
   const colorArray = ["/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg"];
 
   const navigate = useNavigate();
+  const { frameRef, updateFrameRef } = useAppContext();
   const [selectedFrame, setSelectedFrame] = useState("");
-  const [frames, setFrames] = useState(colorArray);
-  const { frameRef } = useAppContext();
+
+  // localStorage.clear();
+
+  useEffect(() => {
+    // Initialize the selected frame from frameRef.current
+    if (frameRef.current) {
+      setSelectedFrame(frameRef.current);
+    }
+  }, [frameRef]);
 
   const handleSelect = (frame) => {
     setSelectedFrame(frame); // Update the selected frame
-    frameRef.current = frame;
+    updateFrameRef(frame); // Update frameRef and local storage
   };
 
   return (
@@ -25,7 +33,7 @@ const SelectFrame = () => {
         </div>
         <div className={css.bottom}>
           <div className={css.frameWrapper}>
-            {frames.map((background, index) => (
+            {colorArray.map((background, index) => (
               <Frame key={index} background={background} onSelectColor={() => handleSelect(background)} selected={background === selectedFrame} />
             ))}
           </div>

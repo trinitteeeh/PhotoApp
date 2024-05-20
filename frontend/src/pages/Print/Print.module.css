@@ -69,7 +69,6 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: red;
   position: relative;
 }
 
@@ -142,4 +141,9 @@ h4 {
   text-align: center;
   font-weight: 500;
   font-family: bricolage-grotesque;
+}
+
+.dot {
+  letter-spacing: 0em;
+  color: #ffdf07;
 }

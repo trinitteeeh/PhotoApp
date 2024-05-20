@@ -14,7 +14,7 @@ const PhotoSession = () => {
   const [timerReady, setTimerReady] = useState(false);
   const beepRef = useRef(null);
   const videoRef = useRef(null);
-  const { canvasRefs } = useAppContext();
+  const { canvasRefs, updateCanvasRefs } = useAppContext();
 
   const navigate = useNavigate();
 
@@ -40,20 +40,20 @@ const PhotoSession = () => {
       }
     };
 
-    //Ketika titik 0
+    // When countdown reaches 0
     if (countDown === 0 && pictureTaken < 3) {
       takePicture();
       setPictureTaken(pictureTaken + 1);
-      //add flashing effect and wait for 2 seconds
+      // Add flashing effect and wait for 2 seconds
       setFlash(true); // Trigger flash
       setTimeout(() => {
         setFlash(false); // End flash
 
-        // Check if 5 pictures have been taken, if so, navigate to next page
+        // Check if 3 pictures have been taken, if so, navigate to next page
         if (pictureTaken >= 2) {
           navigate("/select-filter");
         } else {
-          // Reset countdown only if less than 5 pictures have been taken
+          // Reset countdown only if less than 3 pictures have been taken
           setCountDown(2);
         }
       }, 1000);
@@ -104,7 +104,8 @@ const PhotoSession = () => {
     const ctx = newCanvas.getContext("2d");
     if (ctx && videoRef.current) {
       ctx.drawImage(videoRef.current, 0, 0, width, height);
-      canvasRefs.current.push(newCanvas);
+      const updatedCanvasRefs = [...canvasRefs.current, newCanvas];
+      updateCanvasRefs(updatedCanvasRefs);
     }
   };
 
@@ -115,7 +116,7 @@ const PhotoSession = () => {
       <audio ref={beepRef} src="/audio/countdown_beep.wav" preload="auto"></audio>
       {flash && <Flash />}
       {!flash && timerReady && <Timer countDown={countDown} />}
-      <PhotoSessionDisplay canvasRef={canvasRefs} />
+      <PhotoSessionDisplay canvasRefs={canvasRefs.current} />
     </div>
   );
 };

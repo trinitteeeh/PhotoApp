@@ -4,6 +4,7 @@ import css from "./StartPage.module.css";
 
 const StartPage = () => {
   const navigate = useNavigate();
+  localStorage.clear();
 
   const handleTutorPage = () => {
     navigate("/tutor");

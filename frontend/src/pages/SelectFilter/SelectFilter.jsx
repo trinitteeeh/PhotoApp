@@ -3,17 +3,16 @@ import css from "./SelectFilter.module.css";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppContext";
 import Filter from "../../components/Filter/Filter";
-import PhotoSessionDisplay from "../../components/PhotoSessionDisplay/PhotoSessionDisplay";
 
 const SelectFilter = () => {
   const navigate = useNavigate();
-  const { canvasRefs, frameRef, filterRef } = useAppContext();
+  const { canvasRefs, frameRef, filterRef, updateFilterRef } = useAppContext();
 
-  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState(filterRef.current || null);
 
   const applyFilter = (filterValue) => {
     setSelectedFilter(filterValue);
-    filterRef.current = filterValue;
+    updateFilterRef(filterValue);
   };
 
   const filters = [

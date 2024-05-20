@@ -1,14 +1,14 @@
 import React from "react";
 import css from "./PhotoSessionDisplay.module.css";
 
-const PhotoSessionDisplay = ({ canvasRef }) => {
-  // Function to create 5 child divs
+const PhotoSessionDisplay = ({ canvasRefs }) => {
+  // Function to create child divs based on canvasRefs
   const renderChildren = () => {
     const children = [];
     for (let i = 0; i < 3; i++) {
       children.push(
         <div className={css.child} key={i}>
-          {canvasRef.current && canvasRef.current[i] ? <canvas ref={(el) => el && el.replaceWith(canvasRef.current[i])}></canvas> : null}
+          {canvasRefs[i] ? <canvas ref={(el) => el && el.replaceWith(canvasRefs[i])}></canvas> : null}
         </div>
       );
     }
