@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import css from "./Print.module.css";
 import { useAppContext } from "../../AppContext";
 import html2canvas from "html2canvas";
-import { QRCodeCanvas } from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 import axios from "axios";
 
 const Print = () => {
@@ -34,7 +34,9 @@ const Print = () => {
         link.href = canvas.toDataURL();
         link.click();
 
-        const imageURL = canvas.toDataURL("image/png");
+        //disini upload canvas ke server!
+
+        const imageURL = canvas.toDataURL();
         setImageURL(imageURL);
       });
     };
@@ -75,7 +77,7 @@ const Print = () => {
         </div>
       </div>
       <div className={css.rightSide}>
-        {/* <div className={css.qrContainer}>{imageURL && <QRCodeCanvas value={imageURL} className={css.qr} />}</div> */}
+        <div className={css.qrContainer}>{imageURL && <QRCodeSVG value={"images/logo/logo.svg"} className={css.qr} />}</div>
         <div className={css.printContainer}>
           <img src="/images/print/print.svg" alt="" className={css.printImg} />
           <h4 className={css.bottomText}>
