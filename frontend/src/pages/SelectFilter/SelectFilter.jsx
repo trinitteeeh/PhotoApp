@@ -17,12 +17,12 @@ const SelectFilter = () => {
   };
 
   const filters = [
-    { name: "Grayscale", value: "grayscale(50%)" },
-    { name: "Sepia", value: "sepia(50%)" },
-    { name: "Invert", value: "invert(100%)" },
-    { name: "Saturate", value: "saturate(150%)" },
-    { name: "Brightness", value: "brightness(150%)" },
-    { name: "Blur", value: "blur(5px)" },
+    { name: "Vintage", value: "sepia(30%) contrast(85%) brightness(90%)" },
+    { name: "Warm", value: "sepia(20%) saturate(150%)" },
+    { name: "Cool", value: "hue-rotate(180deg) saturate(120%)" },
+    { name: "High Contrast", value: "contrast(150%)" },
+    { name: "Soft", value: "brightness(110%) contrast(90%) saturate(110%)" },
+    { name: "Dramatic", value: "contrast(130%) brightness(80%)" },
   ];
 
   return (

@@ -8,7 +8,7 @@ import PhotoSessionDisplay from "../../components/PhotoSessionDisplay/PhotoSessi
 import Flash from "../../components/Flash/Flash";
 
 const PhotoSession = () => {
-  const [countDown, setCountDown] = useState(5);
+  const [countDown, setCountDown] = useState(2);
   const [pictureTaken, setPictureTaken] = useState(0);
   const [flash, setFlash] = useState(false);
   const [timerReady, setTimerReady] = useState(false);
@@ -54,7 +54,7 @@ const PhotoSession = () => {
           navigate("/select-filter");
         } else {
           // Reset countdown only if less than 5 pictures have been taken
-          setCountDown(5);
+          setCountDown(2);
         }
       }, 1000);
     } else {

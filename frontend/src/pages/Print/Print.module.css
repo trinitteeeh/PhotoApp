@@ -44,6 +44,7 @@
   width: 9.05vw;
   height: 9.05vw;
   border-radius: 5px;
+  transform: scaleX(-1);
 }
 
 canvas {

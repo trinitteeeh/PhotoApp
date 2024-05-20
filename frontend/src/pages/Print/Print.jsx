@@ -3,7 +3,7 @@ import css from "./Print.module.css";
 import { useAppContext } from "../../AppContext";
 import html2canvas from "html2canvas";
 import { QRCodeSVG } from "qrcode.react";
-import axios from "axios";
+import { applyFilter } from "./filter";
 
 const Print = () => {
   const { canvasRefs, filterRef, frameRef } = useAppContext();
@@ -19,13 +19,13 @@ const Print = () => {
         // Only apply filter if the child is a canvas
         if (canvas) {
           const ctx = canvas.getContext("2d");
+          console.log("ini filter", filterRef.current);
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           applyFilter(imageData.data, filterRef.current); // Use your filter function here
           ctx.putImageData(imageData, 0, 0);
         }
       });
     };
-
     // Capture the frame as an image and set the URL
     const downloadFrameAsImage = () => {
       html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
@@ -34,7 +34,26 @@ const Print = () => {
         link.href = canvas.toDataURL();
         link.click();
 
+        const fileName = "foto.png";
+        const url = canvas.toDataURL("image/png");
+
         //disini upload canvas ke server!
+        // fetch("/upload", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({ imageBase64: url, fileName }),
+        // })
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     console.log("Image uploaded:", data.imageUrl);
+        //     // Optionally, do something with the uploaded image URL
+        //     setImageURL(data.imageUrl);
+        //   })
+        //   .catch((error) => {
+        //     console.error("Error uploading image:", error);
+        //   });
 
         //const imageURL = canvas.toDataURL(); //nanti returnnya boleh link dari foto itu
         //dibawah ini cuma dummy data
@@ -45,19 +64,7 @@ const Print = () => {
 
     applyFilterToCanvases();
     downloadFrameAsImage();
-  }, [filterRef.current]);
-
-  // Function to apply specific filters
-  const applyFilter = (data, filter) => {
-    // Example grayscale filter
-    if (filter === "grayscale(50%)") {
-      for (let i = 0; i < data.length; i += 4) {
-        const brightness = 0.3 * data[i] + 0.59 * data[i + 1] + 0.11 * data[i + 2];
-        data[i] = data[i + 1] = data[i + 2] = brightness;
-      }
-    }
-    // Add other filters similarly
-  };
+  }, []);
 
   return (
     <div className={css.container}>
