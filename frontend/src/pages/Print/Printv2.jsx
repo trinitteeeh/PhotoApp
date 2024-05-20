@@ -62,32 +62,70 @@ const Print = () => {
       });
     };
 
-    const downloadFrameAsImage = async () => {
-      // const canvas = await html2canvas(printRef.current, { backgroundColor: null });
-      // const url = canvas.toDataURL("image/jpeg"); // Mengatur kualitas JPEG ke 0.5 untuk mengurangi ukuran data URL
+    const downloadFrameAsImage = () => {
+        requestAnimationFrame(() => {
+          // Ensure the DOM updates have taken effect
+          html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
+            // Instead of creating a link and downloading, convert the canvas to a Blob
+            canvas.toBlob((blob) => {
+              // Create a new FormData object for sending as multipart/form-data
+              const formData = new FormData();
+              formData.append("image", blob, "frame-image.png");
+      
+              // Now, you can send the Blob to the server
+              axios.post("http://localhost:5000/upload", formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              }).then(response => {
+                console.log("Image uploaded successfully: ", response.data);
+                setImageURL(response.data.imageUrl); // Assuming the server responds with the URL of the image
+              }).catch(error => {
+                console.error("Error uploading image:", error);
+              });
+      
+              // If you want to still download the image directly to the user's computer:
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.download = "frame-image.png";
+              link.href = url;
+              link.click();
+              link.onload = () => { URL.revokeObjectURL(url); } // Cleanup after download
+      
+              // You may not need to set this if it's handled differently
+              setImageURL("https://t4.ftcdn.net/jpg/01/25/86/35/360_F_125863509_jaISqQt7MOfhOT3UxRTHZoEbMmmFYIr8.jpg");
+            }, 'image/png');
+          });
+        });
+      };
+      
 
-      // // Kirim URL gambar ke server
-      // try {
-      //   const response = await axios.post("http://localhost:5000/upload", { imageUrl: url });
-      //   console.log("INI URLNYA ::::;   ", url);
-      //   setQRCodeValue(url);
+    // const downloadFrameAsImage = async () => {
+    //   const canvas = await html2canvas(printRef.current, { backgroundColor: null });
+    //   const url = canvas.toDataURL("image/jpeg"); // Mengatur kualitas JPEG ke 0.5 untuk mengurangi ukuran data URL
 
-      //   //setImageURL(url); // Atur URL gambar jika pengiriman berhasil
-      // } catch (error) {
-      //   console.error("Failed to upload photo:", error);
-      // }
+    //   // Kirim URL gambar ke server
+    //   try {
+    //     const response = await axios.post("http://localhost:5000/upload", { imageUrl: url });
+    //     console.log("INI URLNYA ::::;   ", url);
+    //     setQRCodeValue(url);
 
-      html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
-        const link = document.createElement("a");
-        link.download = "frame-image.png";
-        link.href = canvas.toDataURL();
-        link.click();
-        console.log("downloaded");
+    //     //setImageURL(url); // Atur URL gambar jika pengiriman berhasil
+    //   } catch (error) {
+    //     console.error("Failed to upload photo:", error);
+    //   }
 
-        const imageURL = "https://t4.ftcdn.net/jpg/01/25/86/35/360_F_125863509_jaISqQt7MOfhOT3UxRTHZoEbMmmFYIr8.jpg";
-        setImageURL(imageURL);
-      });
-    };
+    //   html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
+    //     const link = document.createElement("a");
+    //     link.download = "frame-image.png";
+    //     link.href = canvas.toDataURL();
+    //     link.click();
+    //     console.log("downloaded");
+
+    //     const imageURL = "https://t4.ftcdn.net/jpg/01/25/86/35/360_F_125863509_jaISqQt7MOfhOT3UxRTHZoEbMmmFYIr8.jpg";
+    //     setImageURL(imageURL);
+    //   });
+    // };
 
     applyFilterToCanvases();
     downloadFrameAsImage();

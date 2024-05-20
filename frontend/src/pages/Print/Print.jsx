@@ -5,6 +5,7 @@ import html2canvas from "html2canvas";
 import { QRCodeSVG } from "qrcode.react";
 import { applyFilter } from "./filter";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Print = () => {
   const { canvasRefs, filterRef, frameRef } = useAppContext();
@@ -54,40 +55,40 @@ const Print = () => {
         if (canvas) {
           const ctx = canvas.getContext("2d");
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          console.log("ini filter ", filterRef.current);
           applyFilter(imageData.data, filterRef.current);
           ctx.putImageData(imageData, 0, 0);
+          canvas.style.filter = filterRef.current; // Ensure the CSS filter is also applied if using CSS filters
         }
       });
     };
 
     const downloadFrameAsImage = () => {
-      html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
-        const link = document.createElement("a");
-        link.download = "frame-image.png";
-        link.href = canvas.toDataURL();
-        link.click();
+      requestAnimationFrame(() => {
+        html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
+          const dataURL = canvas.toDataURL("image/png"); // This creates a PNG data URL
+          console.log("Canvas captured");
 
-        const fileName = "foto.png";
-        const url = canvas.toDataURL("image/png");
+          // Upload the image Data URL to the server
+          axios
+            .post("http://localhost:5000/upload", { imageUrl: dataURL })
+            .then((response) => {
+              console.log("Image uploaded successfully:", response.data);
+              setImageURL(response.data.imageUrl); // Assuming the server responds with the URL of the stored image
+            })
+            .catch((error) => {
+              console.error("Error uploading image:", error);
+            });
 
-        // Optionally upload the canvas to the server here
-        // fetch("/upload", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({ imageBase64: url, fileName }),
-        // })
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     setImageURL(data.imageUrl);
-        //   })
-        //   .catch((error) => {
-        //     console.error("Error uploading image:", error);
-        //   });
-
-        const imageURL = "https://t4.ftcdn.net/jpg/01/25/86/35/360_F_125863509_jaISqQt7MOfhOT3UxRTHZoEbMmmFYIr8.jpg";
-        setImageURL(imageURL);
+          // Optionally, trigger download on the client as well
+          const link = document.createElement("a");
+          link.download = "frame-image.png";
+          link.href = dataURL;
+          link.click();
+          link.onload = () => {
+            URL.revokeObjectURL(dataURL); // Cleanup
+          };
+        });
       });
     };
 

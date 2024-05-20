@@ -11,8 +11,6 @@ const SelectFrame = () => {
   const { frameRef, updateFrameRef } = useAppContext();
   const [selectedFrame, setSelectedFrame] = useState("");
 
-  // localStorage.clear();
-
   useEffect(() => {
     // Initialize the selected frame from frameRef.current
     if (frameRef.current) {
