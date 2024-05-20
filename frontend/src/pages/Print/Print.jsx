@@ -36,8 +36,10 @@ const Print = () => {
 
         //disini upload canvas ke server!
 
-        const imageURL = canvas.toDataURL();
-        setImageURL(imageURL);
+        //const imageURL = canvas.toDataURL(); //nanti returnnya boleh link dari foto itu
+        //dibawah ini cuma dummy data
+        const imageURL = "https://t4.ftcdn.net/jpg/01/25/86/35/360_F_125863509_jaISqQt7MOfhOT3UxRTHZoEbMmmFYIr8.jpg";
+        setImageURL(imageURL); //masukin
       });
     };
 
@@ -77,7 +79,7 @@ const Print = () => {
         </div>
       </div>
       <div className={css.rightSide}>
-        <div className={css.qrContainer}>{imageURL && <QRCodeSVG value={"images/logo/logo.svg"} className={css.qr} />}</div>
+        <div className={css.qrContainer}>{imageURL && <QRCodeSVG value={imageURL} className={css.qr} />}</div>
         <div className={css.printContainer}>
           <img src="/images/print/print.svg" alt="" className={css.printImg} />
           <h4 className={css.bottomText}>
