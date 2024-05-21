@@ -23,8 +23,7 @@ const Print = () => {
       setTimer((prevTimer) => {
         if (prevTimer <= 1) {
           clearInterval(interval);
-          localStorage.clear();
-          navigate("/");
+          navigate("/", { state: { fromPrint: true } });
           return 0;
         }
         return prevTimer - 1;

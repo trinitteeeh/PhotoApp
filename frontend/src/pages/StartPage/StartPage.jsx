@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import css from "./StartPage.module.css";
 
 const StartPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    localStorage.clear();
-  }, []);
+    if (location.state?.fromPrint) {
+      localStorage.clear();
+    }
+  }, [location.state]); // Depend on the location state
 
   const handleTutorPage = () => {
     navigate("/tutor");
