@@ -6,6 +6,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { applyFilter } from "./filter";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 const Print = () => {
   const { canvasRefs, filterRef, frameRef } = useAppContext();
@@ -69,15 +70,35 @@ const Print = () => {
           const dataURL = canvas.toDataURL("image/png"); // This creates a PNG data URL
           console.log("Canvas captured");
 
-          // Upload the image Data URL to the server
+          // Convert dataURL to a Blob for upload
+          const dataURLtoBlob = (dataURL) => {
+            const arr = dataURL.split(",");
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+              u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });
+          };
+
+          const blob = dataURLtoBlob(dataURL);
+
+          // Create a form data object
+          const formData = new FormData();
+          formData.append("file", blob, uuidv4() + ".png"); // Optional: Use uuid to generate a unique filename
+          formData.append("upload_preset", "pdrrobxc"); // Replace with your upload preset
+
+          // Upload the image to Cloudinary
           axios
-            .post("http://localhost:5000/upload", { imageUrl: dataURL })
+            .post(`https://api.cloudinary.com/v1_1/dmqhud5tb/image/upload`, formData)
             .then((response) => {
-              console.log("Ini response:", response);
-              setImageURL(response.data.imageUrl); // Assuming the server responds with the URL of the stored image
+              console.log("Cloudinary response:", response);
+              setImageURL(response.data.secure_url); // Use the Cloudinary URL of the uploaded image
             })
             .catch((error) => {
-              console.error("Error uploading image:", error);
+              console.error("Error uploading image to Cloudinary:", error);
             });
 
           // Optionally, trigger download on the client as well
