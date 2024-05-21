@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import css from "./PaymentQR.module.css";
-import QRCode from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 import axios from "axios";
 
 const PaymentQR = ({ navigate, qrUrl }) => {
@@ -25,13 +25,11 @@ const PaymentQR = ({ navigate, qrUrl }) => {
 
   useEffect(() => {
     // React to paymentStatus changes
-    if (paymentStatus === 'settlement') {
+    if (paymentStatus === "settlement") {
       navigate("/payment-success");
-    } else if (paymentStatus === 'pending') {
-      console.log("Pending Payment Wait TO Pay")
-    }
-    else{
-
+    } else if (paymentStatus === "pending") {
+      console.log("Pending Payment Wait TO Pay");
+    } else {
       navigate("/payment-failed");
       console.error("Payment failed, please try again");
     }
@@ -39,13 +37,8 @@ const PaymentQR = ({ navigate, qrUrl }) => {
 
   return (
     <div className={css.container}>
-      <div className={css.paymentContainer}>
-        <div className={css.imageWithQR}>
-          <img src="/images/payment_qr/payment_qr.svg" alt="" className={css.containerImg} />
-          <div className={css.qrCodeWrapper}>
-            <QRCode value={qrUrl} />
-          </div>
-        </div>
+      <div className={css.qrCodeWrapper}>
+        <QRCodeSVG value={qrUrl} className={css.qr} />
       </div>
     </div>
   );

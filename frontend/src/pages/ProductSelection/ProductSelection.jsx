@@ -19,7 +19,7 @@ const ProductSelection = () => {
         const productData = response.data.map((product) => ({
           id: product.id,
           qty: parseInt(product.productName.split(" ")[0]), // Assuming 'productName' is in the format '1 Strip'
-          price: parseInt(product.productPrice.replace(/\D/g, '')), // Remove any non-numeric characters from 'productPrice'
+          price: parseInt(product.productPrice.replace(/\D/g, "")), // Remove any non-numeric characters from 'productPrice'
           url: `/images/product_selection/${product.id}_strip.svg`, // Assuming images are named according to the product id
         }));
         setProducts(productData);
@@ -50,13 +50,13 @@ const ProductSelection = () => {
 
   const handleMoveLess = () => {
     if (showPaymentDialog === true || !currentProduct) return;
-    const currentIndex = products.findIndex(p => p.id === currentProduct.id);
+    const currentIndex = products.findIndex((p) => p.id === currentProduct.id);
     setCurrentProduct(products[(currentIndex - 1 + products.length) % products.length]);
   };
 
   const handleMoveMore = () => {
     if (showPaymentDialog === true || !currentProduct) return;
-    const currentIndex = products.findIndex(p => p.id === currentProduct.id);
+    const currentIndex = products.findIndex((p) => p.id === currentProduct.id);
     setCurrentProduct(products[(currentIndex + 1) % products.length]);
   };
 
@@ -103,6 +103,7 @@ const ProductSelection = () => {
         </div>
       </div>
       {showPaymentDialog && <PaymentQR onClose={handleClosePaymentDialog} navigate={navigate} qrUrl={qrUrl} />}
+      {showPaymentDialog && <div className={css.overlay}></div>}
     </div>
   );
 };

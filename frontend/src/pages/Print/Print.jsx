@@ -73,7 +73,7 @@ const Print = () => {
           axios
             .post("http://localhost:5000/upload", { imageUrl: dataURL })
             .then((response) => {
-              console.log("Image uploaded successfully:", response.data);
+              console.log("Ini response:", response);
               setImageURL(response.data.imageUrl); // Assuming the server responds with the URL of the stored image
             })
             .catch((error) => {
