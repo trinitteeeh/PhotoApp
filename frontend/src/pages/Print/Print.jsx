@@ -66,7 +66,7 @@ const Print = () => {
     const downloadFrameAsImage = () => {
       requestAnimationFrame(() => {
         html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
-          const dataURL = canvas.toDataURL("image/png"); // This creates a PNG data URL
+          const dataURL = canvas.toDataURL("image/png", 1.0);// This creates a PNG data URL
           console.log("Canvas captured");
 
           // Convert dataURL to a Blob for upload

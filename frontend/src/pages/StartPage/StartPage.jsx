@@ -10,6 +10,8 @@ const StartPage = () => {
     if (location.state?.fromPrint) {
       localStorage.clear();
     }
+    localStorage.clear();
+
   }, [location.state]); // Depend on the location state
 
   const handleTutorPage = () => {
