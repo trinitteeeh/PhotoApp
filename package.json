@@ -11,6 +11,7 @@
     "electron-is-dev": "^3.0.1",
     "html2canvas": "^1.4.1",
     "image-screenshot": "^0.1.1",
+    "node-preload": "^0.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
@@ -19,14 +20,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "electron-packager . my-app --platform win32 --arch x64 --overwrite",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \" npm run start\" \"wait-on http://127.0.0.1:3000 && npx electron .\"",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps",
-    "package-win": "electron-packager . --overwrite --platform-win23 --arch=x64 --icon=frontend/public/images/logo/logo.ico --prune=true --out=release-builds"
+    "package-win": "electron-packager . my-app --platform win32 --arch x64 --overwrite"
   },
   "build": {
     "appId": "com.venkatgoud.electron.cra",

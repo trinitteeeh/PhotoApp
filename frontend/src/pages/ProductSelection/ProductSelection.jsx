@@ -26,6 +26,9 @@ const ProductSelection = () => {
         setCurrentProduct(productData[0]); // Set the initial current product
       } catch (error) {
         console.error("Error fetching products:", error);
+        console.log("Failed to fetch products. Please check ysour connection.");
+        window.alert("Network Erorr . Please check your connection.");
+        navigate("/");
       }
     };
     fetchProducts();
@@ -40,6 +43,9 @@ const ProductSelection = () => {
       setSelectedProduct(product);
     } catch (error) {
       console.error("Error fetching QR URL:", error);
+      console.log("Failed to fetch products. Please check ysour connection.");
+      window.alert("Network Erorr . Please check your connection.");
+      navigate("/");
     }
   };
 

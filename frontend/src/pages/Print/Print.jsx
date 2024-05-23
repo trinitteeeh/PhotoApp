@@ -13,9 +13,23 @@ const Print = () => {
   const printRef = useRef(null);
   const [imageURL, setImageURL] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(6000);
   const [dot, setDot] = useState("");
   const navigate = useNavigate();
+
+  const someRef = useRef();
+
+  const [photoToPrint, setPhoto] = useState(null);
+
+  const handlePrint = () => {
+    
+    window.electron.invokePrint().then(() => {
+      console.log('Print command sent');
+    }).catch((error) => {
+      console.error(`Error printing document: ${error}`);
+    });
+  }
+
 
   // Timer and dot effect
   useEffect(() => {
@@ -64,10 +78,12 @@ const Print = () => {
     };
 
     const downloadFrameAsImage = () => {
-      requestAnimationFrame(() => {
+      requestAnimationFrame(async () => {
         html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
           const dataURL = canvas.toDataURL("image/png", 1.0);// This creates a PNG data URL
-          console.log("Canvas captured");
+
+          // Save to local Storage
+          localStorage.setItem("dataURL", dataURL);
 
           // Convert dataURL to a Blob for upload
           const dataURLtoBlob = (dataURL) => {
@@ -88,26 +104,28 @@ const Print = () => {
           const formData = new FormData();
           formData.append("file", blob, uuidv4() + ".png"); // Optional: Use uuid to generate a unique filename
           formData.append("upload_preset", "pdrrobxc"); // Replace with your upload preset
-
+          // setPhoto(dataURL)
+          console.log(dataURL)
           // Upload the image to Cloudinary
           axios
             .post(`https://api.cloudinary.com/v1_1/dmqhud5tb/image/upload`, formData)
             .then((response) => {
               console.log("Cloudinary response:", response);
-              setImageURL(response.data.secure_url); // Use the Cloudinary URL of the uploaded image
+              setImageURL(response.data.secure_url);
+              setPhoto(response.data.url);// Use the Cloudinary URL of the uploaded image
             })
             .catch((error) => {
               console.error("Error uploading image to Cloudinary:", error);
             });
 
           // Optionally, trigger download on the client as well
-          const link = document.createElement("a");
-          link.download = "frame-image.png";
-          link.href = dataURL;
-          link.click();
-          link.onload = () => {
-            URL.revokeObjectURL(dataURL); // Cleanup
-          };
+          // const link = document.createElement("a");
+          // link.download = "frame-image.png";
+          // link.href = dataURL;
+          // link.click();
+          // link.onload = () => {
+          //   URL.revokeObjectURL(dataURL); // Cleanup
+          // };
         });
       });
     };
@@ -138,6 +156,8 @@ const Print = () => {
       </div>
       <div className={css.rightSide}>
         <div className={css.qrContainer}>{imageURL && <QRCodeSVG value={imageURL} className={css.qr} />}</div>
+
+        <button onClick={handlePrint}>Print Image</button>
         <div className={css.printContainer}>
           <img src="/images/print/print.svg" alt="" className={css.printImg} />
           <h4 className={css.bottomText}>

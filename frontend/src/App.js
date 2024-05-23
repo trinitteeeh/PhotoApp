@@ -8,7 +8,8 @@ import SelectFrame from "./pages/SelectFrame/SelectFrame.jsx";
 import PhotoSession from "./pages/PhotoSession/PhotoSession.jsx";
 import SelectFilter from "./pages/SelectFilter/SelectFilter.jsx";
 import Print from "./pages/Print/Print.jsx";
-import ProductSelection from "./pages/ProductSelection/ProductSelection.jsx";
+import ProductSelection from "./pages/ProductSelection/ProductSelection.jsx"
+import { useEffect, useRef, useState } from "react";
 
 function App() {
   return (
@@ -22,9 +23,19 @@ function App() {
         <Route path="/photo-session" element={<PhotoSession />} />
         <Route path="/select-filter" element={<SelectFilter />} />
         <Route path="/print" element={<Print />} />
-        <Route path="/product-selection" element={<ProductSelection />} />
+        <Route path="/product-selection" element={<SelectFrame />} />
+        <Route path="/print-preview" element={<PrintPreview />} />
       </Routes>
     </BrowserRouter>
+  );
+}
+
+// Generate a function for print preview
+function PrintPreview() {
+  const dataURL = localStorage.getItem("dataURL");
+  
+  return (
+    <img src={dataURL} alt="Print Preview" />
   );
 }
 
