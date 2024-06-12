@@ -81,8 +81,6 @@ router.get('/get-transaction-status/:orderId', async (req, res) => {
             isProduction: false,
             serverKey: "SB-Mid-server-FMWZbJPx84LKAKegdoD6ON_J",
             clientKey: "SB-Mid-client-YIjPgxrJlKzSyJg9",
-
-            //111
         });
 
         console.log("Order ID:", orderId);
