@@ -9,11 +9,12 @@ const createWindow = () => {
     height: 600,
     minWidth: 400, // Optional: Set a minimum width
     minHeight: 300, // Optional: Set a minimum height
-    // fullscreen: true, // Start in full width
+    fullscreen: true, // Start in full width
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
   });
+  mainWindow.setMenuBarVisibility(false);
 
   // Import `electron-is-dev` using dynamic import to avoid issues with ESM
   import("electron-is-dev")
@@ -23,7 +24,7 @@ const createWindow = () => {
     .catch((err) => console.error("Failed to load isDev:", err));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 };
 
 app.on("will-resize", (event, newBounds) => {
