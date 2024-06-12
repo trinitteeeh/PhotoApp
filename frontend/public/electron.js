@@ -1,4 +1,3 @@
-// Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require("path"); // Corrected the path module import
 
@@ -24,7 +23,7 @@ const createWindow = () => {
     .catch((err) => console.error("Failed to load isDev:", err));
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 app.on("will-resize", (event, newBounds) => {
@@ -63,52 +62,55 @@ app.on("window-all-closed", () => {
 ipcMain.handle('print-document', async (event) => {
   console.log("Before Try");
   try {
-    
-  const printWindow = new BrowserWindow({
-    show: true, // Hide the window as we don't need to display its
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-    },
-  });
-  console.log("Before Load");
+    const printWindow = new BrowserWindow({
+      show: true, // Hide the window as we don't need to display it
+      webPreferences: {
+        preload: path.join(__dirname, "preload.js"),
+      },
+    });
+    console.log("Before Load");
 
-  await printWindow.loadURL("http://localhost:3000/print-preview");
-  console.log("After Load");
+    await printWindow.loadURL("http://localhost:3000/print-preview");
+    console.log("After Load");
 
-  const printOptions = {
-    silent: false,
-    deviceName: "KODAK 6800 Printer",
-    color: true,
-    margins: {
-      marginType: 'custom',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0
-    },
-    landscape: false,
-    scaleFactor: 100,
-    pagesPerSheet: 1,
-    collate: true,
-    copies: 1,
-    duplexMode: 'simplex'
-  };
-  
-  console.log("Before Print");
+    const printOptions = {
+      silent: true,
+      deviceName: "KODAK 6800 Printer",
+      color: true,
+      margins: {
+        marginType: 'custom',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+      },
+      landscape: false,
+      scaleFactor: 100,
+      pagesPerSheet: 1,
+      collate: true,
+      copies: 1,
+      duplexMode: 'simplex',
+      pageSize: {
+        width: 50800,   // Lebar 2 inci dalam mikron
+        height: 152400  // Tinggi 6 inci dalam mikron
+      }
+    };
 
-  printWindow.webContents.print(printOptions, (success, errorType) => {
-    if (!success) {
-      console.error(`Printing failed: ${errorType}`);
-    } else {
-      console.log(printOptions);
-      console.log('Printing succeeded');
-    }
+    console.log("Before Print");
 
-    printWindow.close();
-  });
+    printWindow.webContents.print(printOptions, (success, errorType) => {
+      if (!success) {
+        console.error(`Printing failed: ${errorType}`);
+      } else {
+        console.log(printOptions);
+        console.log('Printing succeeded');
+      }
+
+      printWindow.close();
+    });
   } catch (error) {
     console.log(error);
   }
-  
+
   console.log("After Print");
 });

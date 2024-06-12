@@ -13,7 +13,7 @@ const Print = () => {
   const printRef = useRef(null);
   const [imageURL, setImageURL] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-  const [timer, setTimer] = useState(6000);
+  const [timer, setTimer] = useState(6);
   const [dot, setDot] = useState("");
   const navigate = useNavigate();
 
