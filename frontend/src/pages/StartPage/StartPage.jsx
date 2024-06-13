@@ -7,11 +7,7 @@ const StartPage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.state?.fromPrint) {
-      window.electronAPI.clearLocalStorage();
-    }
-    window.electronAPI.clearLocalStorage();
-    console.log("Local storage cleared via Electron API.");
+    localStorage.clear();
   }, [location.state]); // Depend on the location state
 
   const handleTutorPage = () => {

@@ -48,7 +48,6 @@ const PhotoSession = () => {
       setFlash(true); // Trigger flash
       setTimeout(() => {
         setFlash(false); // End flash
-
         // Check if 3 pictures have been taken, if so, navigate to next page
         if (pictureTaken >= 2) {
           navigate("/select-filter");
