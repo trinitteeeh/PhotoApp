@@ -14,9 +14,9 @@ router.post('/process-transactions', async (req, res) => {
 
     try {
         const core = new midtransClient.CoreApi({
-            isProduction: false,
-            serverKey: "SB-Mid-server-FMWZbJPx84LKAKegdoD6ON_J",
-            clientKey: "SB-Mid-client-YIjPgxrJlKzSyJg9",
+            isProduction: true,
+            serverKey: "Mid-server-JEjoj6EGm47HqJiVHvoNoLit",
+            clientKey: "Mid-client-Y05_DfzuTeR3bsIj",
         });
 
         // Mengambil harga produk dari server
@@ -78,9 +78,9 @@ router.get('/get-transaction-status/:orderId', async (req, res) => {
         const orderId = latestOrder[0].dataValues.orderId;
 
         const core = new midtransClient.CoreApi({
-            isProduction: false,
-            serverKey: "SB-Mid-server-FMWZbJPx84LKAKegdoD6ON_J",
-            clientKey: "SB-Mid-client-YIjPgxrJlKzSyJg9",
+            isProduction: true,
+            serverKey: "Mid-server-JEjoj6EGm47HqJiVHvoNoLit",
+            clientKey: "Mid-client-Y05_DfzuTeR3bsIj",
         });
 
         console.log("Order ID:", orderId);

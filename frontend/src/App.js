@@ -23,7 +23,7 @@ function App() {
         <Route path="/photo-session" element={<PhotoSession />} />
         <Route path="/select-filter" element={<SelectFilter />} />
         <Route path="/print" element={<Print />} />
-        <Route path="/product-selection" element={<SelectFrame />} />
+        <Route path="/product-selection" element={<ProductSelection />} />
         <Route path="/print-preview" element={<PrintPreview />} />
       </Routes>
     </BrowserRouter>
