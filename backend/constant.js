@@ -1,3 +1,14 @@
-export const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY;
-export const MIDTRANS_API_URL = process.env.MIDTRANS_API_URL;
-export const MIDTRANS_CLIENT_KEY = process.env.MIDTRANS_CLIENT_KEY;
+// constant.js or constant.mjs
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const isProduction = process.env.NODE_ENV === 'production';
+const serverKey = process.env.SERVER_KEY;
+const clientKey = process.env.CLIENT_KEY;
+
+export {
+    isProduction,
+    serverKey,
+    clientKey
+};

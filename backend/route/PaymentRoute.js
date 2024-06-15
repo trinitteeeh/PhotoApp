@@ -3,6 +3,7 @@ import midtransClient from "midtrans-client";
 import Order from "../models/OrderModel.js";
 import axios from "axios"; 
 
+import { isProduction, serverKey, clientKey } from '../constant.js';
 const router = express.Router();
 
 router.post('/process-transactions', async (req, res) => {
@@ -14,9 +15,9 @@ router.post('/process-transactions', async (req, res) => {
 
     try {
         const core = new midtransClient.CoreApi({
-            isProduction: true,
-            serverKey: "Mid-server-JEjoj6EGm47HqJiVHvoNoLit",
-            clientKey: "Mid-client-Y05_DfzuTeR3bsIj",
+            isProduction,
+            serverKey,
+            clientKey,
         });
 
         // Mengambil harga produk dari server
@@ -78,9 +79,9 @@ router.get('/get-transaction-status/:orderId', async (req, res) => {
         const orderId = latestOrder[0].dataValues.orderId;
 
         const core = new midtransClient.CoreApi({
-            isProduction: true,
-            serverKey: "Mid-server-JEjoj6EGm47HqJiVHvoNoLit",
-            clientKey: "Mid-client-Y05_DfzuTeR3bsIj",
+            isProduction,
+            serverKey,
+            clientKey,
         });
 
         console.log("Order ID:", orderId);
