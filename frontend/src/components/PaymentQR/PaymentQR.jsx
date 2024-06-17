@@ -38,7 +38,8 @@ const PaymentQR = ({ navigate, qrUrl }) => {
   return (
     <div className={css.container}>
       <div className={css.qrCodeWrapper}>
-        <QRCodeSVG value={qrUrl} className={css.qr} />
+        <img src={qrUrl} className={css.qr} /> //after
+        {/* <QRCodeSVG value={qrUrl} className={css.qr} /> */} //before
       </div>
     </div>
   );
