@@ -8,7 +8,7 @@ import PhotoSessionDisplay from "../../components/PhotoSessionDisplay/PhotoSessi
 import Flash from "../../components/Flash/Flash";
 
 const PhotoSession = () => {
-  const [countDown, setCountDown] = useState(2);
+  const [countDown, setCountDown] = useState(5);
   const [pictureTaken, setPictureTaken] = useState(0);
   const [flash, setFlash] = useState(false);
   const [timerReady, setTimerReady] = useState(false);
@@ -53,7 +53,7 @@ const PhotoSession = () => {
           navigate("/select-filter");
         } else {
           // Reset countdown only if less than 3 pictures have been taken
-          setCountDown(2);
+          setCountDown(5);
         }
       }, 1000);
     } else {
@@ -95,17 +95,37 @@ const PhotoSession = () => {
   }, []);
 
   const takePicture = () => {
-    const width = 500;
-    const height = width / (16 / 9); // Aspect ratio of 16:9
+    // Get the intrinsic size of the video element
+    const videoWidth = videoRef.current.videoWidth;
+    const videoHeight = videoRef.current.videoHeight;
+
+    console.log("Video width: ", videoWidth, " and height: ", videoHeight);
+
+    // Calculate the visible portion based on your specific dimensions
+    const srcX = videoWidth * 0.2838; // 28.38% from the left
+    const srcWidth = videoWidth * (1 - 0.2838 * 2); // Width minus both left and right margins
+    const srcHeight = videoHeight * (1 - 0.2314); // Height minus the bottom margin
+
+    // As we want a square output, determine the size based on the smaller dimension of the visible area
+    const canvasSize = Math.min(srcWidth, srcHeight);
+
+    // Create a new canvas with the determined size
     const newCanvas = document.createElement("canvas");
-    newCanvas.width = width;
-    newCanvas.height = height;
+    newCanvas.width = canvasSize;
+    newCanvas.height = canvasSize;
     const ctx = newCanvas.getContext("2d");
-    if (ctx && videoRef.current) {
-      ctx.drawImage(videoRef.current, 0, 0, width, height);
-      const updatedCanvasRefs = [...canvasRefs.current, newCanvas];
-      updateCanvasRefs(updatedCanvasRefs);
-    }
+
+    // Calculate the top coordinate to center the crop vertically (if necessary)
+    const srcY = (videoHeight - srcHeight) / 2; // Center the crop vertically
+
+    console.log("srcX: ", srcX, " srcY: ", srcY, " srcWidth: ", srcWidth, " srcHeight: ", srcHeight);
+
+    // Draw the image from the calculated source coordinates
+    ctx.drawImage(videoRef.current, srcX, srcY, srcWidth, srcWidth, 0, 0, canvasSize, canvasSize);
+
+    // Update canvas references
+    const updatedCanvasRefs = [...canvasRefs.current, newCanvas];
+    updateCanvasRefs(updatedCanvasRefs);
   };
 
   return (
@@ -121,3 +141,8 @@ const PhotoSession = () => {
 };
 
 export default PhotoSession;
+
+//830.208
+
+//1920x1080
+// 830.088

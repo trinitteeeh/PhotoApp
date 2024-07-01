@@ -17,8 +17,7 @@ const PhotoSessionDisplay = ({ canvasRefs }) => {
 
   return (
     <div className={css.container}>
-      <div className={css.display}></div>
-      <div className={css.leftBrick}></div>
+      <div className ={css.leftBrick}></div>
       <div className={css.childContainer}>{renderChildren()}</div>
       <div className={css.rightBrick}></div>
     </div>
