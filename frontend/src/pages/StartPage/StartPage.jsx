@@ -8,13 +8,14 @@ const StartPage = () => {
 
   useEffect(() => {
     localStorage.clear();
-  }, [location.state]); // Depend on the location state
+  }, []);
 
   const handleTutorPage = () => {
     navigate("/tutor");
   };
 
   const handleStart = () => {
+    localStorage.clear();
     navigate("/product-selection");
   };
 

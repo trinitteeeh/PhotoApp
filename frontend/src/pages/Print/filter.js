@@ -9,10 +9,6 @@ const applyFilter = (data, filter) => {
       applySepia(data, 0.2);
       applySaturate(data, 1.5);
       break;
-    case "hue-rotate(180deg) saturate(120%)": // Cool
-      applyHueRotate(data, 180);
-      applySaturate(data, 1.2);
-      break;
     case "contrast(150%)": // High Contrast
       applyContrast(data, 1.5);
       break;
@@ -24,6 +20,9 @@ const applyFilter = (data, filter) => {
     case "contrast(130%) brightness(80%)": // Dramatic
       applyContrast(data, 1.3);
       applyBrightness(data, 0.8);
+      break;
+    case "grayscale(100%)": // Black and White
+      applySaturate(data, 0); // Completely desaturate the image
       break;
     default:
       console.log("Filter not found");

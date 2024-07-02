@@ -34,10 +34,10 @@
   background-image: url("../../../public/images/select_frame/empty_frame.svg");
   background-position: top center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
 }
 
-.frameLogo{
+.frameLogo {
   margin-top: auto;
   cursor: pointer;
 }

@@ -18,10 +18,10 @@ const SelectFilter = () => {
   const filters = [
     { name: "Vintage", value: "sepia(30%) contrast(85%) brightness(90%)" },
     { name: "Warm", value: "sepia(20%) saturate(150%)" },
-    { name: "Cool", value: "hue-rotate(180deg) saturate(120%)" },
     { name: "High Contrast", value: "contrast(150%)" },
     { name: "Soft", value: "brightness(110%) contrast(90%) saturate(110%)" },
     { name: "Dramatic", value: "contrast(130%) brightness(80%)" },
+    { name: "Black and White", value: "grayscale(100%)" },
   ];
 
   return (

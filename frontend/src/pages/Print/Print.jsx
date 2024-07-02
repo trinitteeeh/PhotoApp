@@ -7,29 +7,32 @@ import { applyFilter } from "./filter";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import DownloadRQ from "../../components/DownloadQR/DownloadRQ";
 
 const Print = () => {
   const { canvasRefs, filterRef, frameRef } = useAppContext();
   const printRef = useRef(null);
   const [imageURL, setImageURL] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-  const [timer, setTimer] = useState(6);
+  const [timer, setTimer] = useState(60);
   const [dot, setDot] = useState("");
   const navigate = useNavigate();
+  const [uploading, setUploading] = useState(false);
 
   const someRef = useRef();
 
   const [photoToPrint, setPhoto] = useState(null);
 
   const handlePrint = () => {
-    
-    window.electron.invokePrint().then(() => {
-      console.log('Print command sent');
-    }).catch((error) => {
-      console.error(`Error printing document: ${error}`);
-    });
-  }
-
+    window.electron
+      .invokePrint()
+      .then(() => {
+        console.log("Print command sent");
+      })
+      .catch((error) => {
+        console.error(`Error printing document: ${error}`);
+      });
+  };
 
   // Timer and dot effect
   useEffect(() => {
@@ -43,7 +46,7 @@ const Print = () => {
         return prevTimer - 1;
       });
 
-      setDot((prevDot) => (prevDot.length >= 3 ? "" : prevDot + "."));
+      setDot((prevDot) => (prevDot.length >= 3 ? "" : prevDot + " ."));
     }, 1000);
 
     return () => clearInterval(interval);
@@ -80,7 +83,7 @@ const Print = () => {
     const downloadFrameAsImage = () => {
       requestAnimationFrame(async () => {
         html2canvas(printRef.current, { backgroundColor: null }).then((canvas) => {
-          const dataURL = canvas.toDataURL("image/png", 1.0);// This creates a PNG data URL
+          const dataURL = canvas.toDataURL("image/png", 1.0); // This creates a PNG data URL
 
           // Save to local Storage
           localStorage.setItem("dataURL", dataURL);
@@ -105,14 +108,14 @@ const Print = () => {
           formData.append("file", blob, uuidv4() + ".png"); // Optional: Use uuid to generate a unique filename
           formData.append("upload_preset", "pdrrobxc"); // Replace with your upload preset
           // setPhoto(dataURL)
-          console.log(dataURL)
+          console.log(dataURL);
           // Upload the image to Cloudinary
           axios
             .post(`https://api.cloudinary.com/v1_1/dmqhud5tb/image/upload`, formData)
             .then((response) => {
               console.log("Cloudinary response:", response);
               setImageURL(response.data.secure_url);
-              setPhoto(response.data.url);// Use the Cloudinary URL of the uploaded image
+              setPhoto(response.data.url); // Use the Cloudinary URL of the uploaded image
             })
             .catch((error) => {
               console.error("Error uploading image to Cloudinary:", error);
@@ -138,8 +141,7 @@ const Print = () => {
     <div className={css.container}>
       <div className={css.leftSide}>
         <h2 className={css.title}>
-          Printing&nbsp;&nbsp;&nbsp;Your &nbsp;&nbsp;&nbsp;<b style={{ color: "#fff" }}>Memories</b>
-          {dot}
+          Printing&nbsp;&nbsp;&nbsp;Your &nbsp;&nbsp;&nbsp;<b style={{ color: "#fff" }}>Memories</b>&nbsp;{dot}
         </h2>
         <div className={css.frameContainer}>
           <div className={css.frame} ref={printRef} style={{ backgroundImage: `url('${frameRef.current}')` }}>
@@ -155,7 +157,7 @@ const Print = () => {
         </div>
       </div>
       <div className={css.rightSide}>
-        <div className={css.qrContainer}>{imageURL && <QRCodeSVG value={imageURL} className={css.qr} />}</div>
+        <DownloadRQ qr={imageURL} />
 
         <button onClick={handlePrint}>Print Image</button>
         <div className={css.printContainer}>

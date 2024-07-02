@@ -5,7 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppContext";
 
 const SelectFrame = () => {
-  const colorArray = ["/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg", "/images/select_frame/placeholder_1.svg"];
+  const colorArray = [
+
+    //ganti ke blop bwt ambil ke database
+    "/images/select_frame/frames/frame_1.svg",
+    "/images/select_frame/frames/frame_2.png",
+    "/images/select_frame/frames/frame_3.psd",
+    "/images/select_frame/frames/frame_4.jpg",
+    "/images/select_frame/frames/frame_5.jpg",
+    "/images/select_frame/frames/frame_6.jpg",
+    "/images/select_frame/frames/frame_7.psd",
+    "/images/select_frame/frames/frame_8.psd",
+  ];
 
   const navigate = useNavigate();
   const { frameRef, updateFrameRef } = useAppContext();
